@@ -15,6 +15,10 @@ Hyperlight is yet another PHP flat-file blog engine with the intent of being inc
 * PHP (tested on 5.6)
 * Apache mod_rewrite engine
 
+## Demo
+
+A demo of the initial installation state can be found here: [https://tombofry.co.uk/hyperlight](https://tombofry.co.uk/hyperlight)
+
 ## No Admin Panel
 
 Hey, every piece of software has its problems, this has one that you could consider intentional. There's no admin panel to write posts and change settings - all configuration must be done manually. However, all this requires is changing one file (`config.php`) with the values you want.
