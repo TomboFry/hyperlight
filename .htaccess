@@ -1,4 +1,7 @@
-RewriteEngine On
+<IfModule mod_rewrite.c>
+	RewriteEngine On
 
-RewriteRule ^([A-Za-z0-9-_]+)\/?$ index.php?post=$1 [L]
-RewriteRule ^page\/([A-Za-z0-9-_]+)\/?$ index.php?page=$1 [L]
+	RewriteRule ^([A-Za-z0-9-_\s]+)\/?$ /index.php?post=$1 [L]
+	RewriteRule ^tag\/([A-Za-z0-9-_\s]+)\/?.*$ /index.php?tag=$1
+	RewriteRule ^(.*\/)?page\/([0-9]+)\/?$ /index.php?page=$2&%{QUERY_STRING} [L]
+</IfModule>

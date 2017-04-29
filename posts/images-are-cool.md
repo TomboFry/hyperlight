@@ -1,6 +1,7 @@
 Images are cool
 
 http://lorempixel.com/1024/480/
+featured image, guide
 -----
 
 This time, the post has a feature image but not a summary!

@@ -14,10 +14,10 @@ class Blog {
 	private $page_num;
 	private $page_num_total;
 
-	function __construct($url, $page) {
+	function __construct($url, $page, $tag) {
 		if ($url !== "") {
 			try {
-				$this->entries = [new Entry($url)];
+				$this->entries = [new Entry($url, "")];
 				$this->page = Page::Single;
 				$this->page_num = 0;
 				$this->page_num_total = 1;
@@ -28,7 +28,7 @@ class Blog {
 				$this->page_num_total = 1;
 			}
 		} else {
-			$this->entries = Blog::loadEntries();
+			$this->entries = Blog::loadEntries($tag);
 
 			// Sort the posts before manipulating and displaying them
 			usort($this->entries, function ($a, $b) {
@@ -47,7 +47,7 @@ class Blog {
 		}
 	}
 
-	private function loadEntries() {
+	private function loadEntries($tag) {
 		$files = scandir(Config::PostsDirectory);
 		$files = array_splice($files, 2);
 
@@ -55,7 +55,7 @@ class Blog {
 
 		foreach ($files as $file) {
 			try {
-				$entries[] = new Entry(rtrim($file, '.md'));
+				$entries[] = new Entry(rtrim($file, '.md'), $tag);
 			} catch (NotFoundException $e) {
 				// Do nothing, don't add it to the array.
 			}
@@ -83,11 +83,11 @@ class Blog {
 	}
 
 	public function get_page_prev() {
-		return Config::Root . "page/" . $this->page_num;
+		return get_page_url() . "page/" . $this->page_num;
 	}
 
 	public function get_page_next() {
-		return Config::Root . "page/" . ($this->page_num + 2);
+		return get_page_url() . "page/" . ($this->page_num + 2);
 	}
 
 	public function has_page_prev() {
@@ -112,11 +112,12 @@ class Entry {
 	public $slug;
 	public $summary;
 	public $image;
+	public $tags;
 	public $content;
 	public $timestamp;
 	public $edited;
 
-	public function __construct($slug) {
+	public function __construct($slug, $tag) {
 		$fullpath = Config::PostsDirectory . $slug . ".md";
 
 		if (!file_exists($fullpath)) {
@@ -127,14 +128,23 @@ class Entry {
 		$lines = explode("\n", $file_contents);
 
 		$this->slug = $slug;
-		$this->title = rtrim($lines[0]);
-		$this->summary = rtrim($lines[1]);
-		$this->image = rtrim($lines[2]);
+		$this->title = trim($lines[0]);
+		$this->summary = trim($lines[1]);
+		$this->image = trim($lines[2]);
+		$this->tags = explode(", ", strtolower(trim($lines[3])));
+
+		if ($tag !== "") {
+			if (!in_array($tag, $this->tags)) {
+				throw new NotFoundException();
+			}
+		}
+
+		$metadata_length = 5;
 		if (using_parsedown()) {
 			$Parsedown = new Parsedown();
-			$this->content = $Parsedown->text(implode("\n", array_slice($lines, 4)));
+			$this->content = $Parsedown->text(implode("\n", array_slice($lines, $metadata_length)));
 		} else {
-			$this->content = "<p>" . implode("<br/>", array_slice($lines, 4)) . "</p>";
+			$this->content = "<p>" . implode("<br/>", array_slice($lines, $metadata_length)) . "</p>";
 		}
 		$this->timestamp = filectime($fullpath);
 		$this->edited = filemtime($fullpath);
@@ -145,5 +155,19 @@ class Entry {
 			return true;
 		}
 		return false;
+	}
+
+	public function has_tags() {
+		if (isset($this->tags) && count($this->tags) > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public function date_pretty() {
+		return gmdate(Config::DatePretty, $this->timestamp);
+	}
+	public function date_datetime() {
+		return gmdate("Y-m-d\TH:i:s", $this->timestamp);
 	}
 }

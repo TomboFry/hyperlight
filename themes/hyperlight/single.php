@@ -1,6 +1,8 @@
 <?php
 
 function post($entry, $full) {
+	$root = Config::Root;
+
 	echo "<article class='entry" . ($full === true ? " single" : "") . "'>";
 
 	if ($full === true) {
@@ -10,12 +12,20 @@ function post($entry, $full) {
 		echo "<h2>{$entry->title}</h2>";
 		echo "<div class='content'>{$entry->content}</div>";
 	} else {
-		$root = Config::Root;
 		echo "<h2><a href='{$root}{$entry->slug}'>{$entry->title}</a></h2>";
 		echo "<div class='content'><p>{$entry->summary}</p></div>";
 	}
-	$date_pretty = gmdate("l, jS F o, H:i:s", $entry->timestamp);
-	$date_datetime = gmdate("Y-m-d\TH:i:s", $entry->timestamp);
-	echo "<time datetime={$date_datetime}>Posted on {$date_pretty}</time>";
+
+	// Post Metadata, including date posted and tags
+	echo "<div class='metadata'>";
+	echo "<time datetime={$entry->date_datetime()}>Posted on {$entry->date_pretty()}</time>";
+	if ($entry->has_tags()) {
+		echo "<div class='tags'>Tags: ";
+		foreach ($entry->tags as $tag) {
+			echo "<a href='{$root}tag/{$tag}'>{$tag}</a>";
+		}
+		echo "</div>";
+	}
+	echo "</div>";
 	echo "</article>";
 }

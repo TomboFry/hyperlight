@@ -140,6 +140,8 @@ $colour_dark = "#0087D5";
 		cursor: help;
 	}
 
+	/* PRISM THEMING END */
+
 	html {
 		height: 100%;
 	}
@@ -186,9 +188,16 @@ $colour_dark = "#0087D5";
 	.entry:last-of-type {
 		margin-bottom: 64px;
 	}
-	.entry time {
+	.entry .metadata {
 		display: block;
 		font-size: 0.6em;
+		line-height: 1.618;
+	}
+	.entry .tags a:after {
+		content: ', ';
+	}
+	.entry .tags a:last-of-type:after {
+		content: '';
 	}
 	.entry img {
 		max-width: 100%;

@@ -1,7 +1,11 @@
 <?php
 
+// Edit these variables to your liking
+
 abstract class Config {
 	// The path the blog resides in on your server
+	// eg. If your blog is on http://example.com/blog, Root = "/blog/"
+	// Must end with a slash
 	const Root = "/";
 
 	// The title that appears at the top of the blog (theme dependant)
@@ -11,7 +15,7 @@ abstract class Config {
 	const PostsDirectory = "posts/";
 
 	// The theme to use. This folder must exist in the "themes" directory with an index.php file to run.
-	const Theme = "hyperlight";
+	const Theme = "uberlight";
 
 	// The text that appears at the bottom of each page (theme dependant)
 	const Footer = "&copy; Tom Gardiner 2017";
@@ -24,6 +28,8 @@ abstract class Config {
 
 	// Determines whether or not to use Parsedown, which converts markdown documents into HTML.
 	const Parsedown = true;
+
+	const DatePretty = "l jS F o, H:i:s";
 }
 
 /**
@@ -45,6 +51,15 @@ function get_theme_js_dir() {
 // Prints out the link to the homepage
 function get_home_link() {
 	echo Config::Root;
+}
+
+// Returns the current page, including whether a tag was included
+function get_page_url() {
+	$str = Config::Root;
+	if (isset($_GET['tag']) && $_GET['tag'] != "") {
+		$str .= "tag/{$_GET['tag']}/";
+	}
+	return $str;
 }
 
 // Returns whether we can use the markdown conversion

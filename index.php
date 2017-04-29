@@ -14,7 +14,8 @@ if (using_parsedown()) {
  */
 
 $url = "";
-$page = 1;
+$page = 0;
+$tag = "";
 
 function not_blank($var) {
 	return (isset($_GET[$var]) && $_GET[$var] !== "");
@@ -22,17 +23,17 @@ function not_blank($var) {
 
 if (not_blank('post')) {
 	$url = $_GET['post'];
-	$page = 0;
 } else {
+	if (not_blank('tag')) {
+		$tag = strtolower($_GET['tag']);
+	}
 	if (not_blank('page')) {
 		$page = $_GET['page'] - 1;
-	} else {
-		$page = 0;
 	}
 }
 
 // Create the blog with a list of entries
-$Blog = new Blog($url, $page);
+$Blog = new Blog($url, $page, $tag);
 
 // Now run the theme
 include("themes/" . Config::Theme . "/index.php");
