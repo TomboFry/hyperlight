@@ -4,7 +4,7 @@ Hyperlight is yet another PHP flat-file blog engine with the intent of being inc
 
 ## Features
 
-* **7.6KB** installed size (with the smallest packaged theme (uberlight) and no markdown support, total size: 67KB)
+* **8.0KB** installed size (with the smallest packaged theme (uberlight) and no markdown support, full download size: 70KB)
 * Markdown parsing, thanks to [Parsedown](https://github.com/erusev/parsedown) (optional, adds 37kb to installation)
 * Theme support (see `themes/uberlight/index.php` for a quick guide)
 * Pagination
