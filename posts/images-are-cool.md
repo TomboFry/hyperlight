@@ -1,6 +1,6 @@
 Images are cool
 
-http://lorempixel.com/1024/480/
+https://lorempixel.com/1024/480/
 featured image, guide
 -----
 

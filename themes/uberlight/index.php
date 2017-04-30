@@ -9,30 +9,30 @@ $footer = Config::Footer;
 <!DOCTYPE html>
 <html lang="en">
 <title><?php echo $Blog->get_title(); ?></title>
-
 <?php
-
 // Print the website title at the top of every page
 echo "<h1><a href='{$root}'>{$title}</a></h1>";
 
 // Check what page we're on and display the relevant content.
-if ($Blog->page === Page::Error404) {
+if ($Blog->url === Url::Error404) {
 	echo "<h2>Error 404: Post Not Found</h2>";
-} else if (count($Blog->entries) === 0) {
+} else if (count($Blog->posts) === 0) {
 	// Only display this if there are no posts in the posts directory
 	echo "<h2>No Posts Found</h2>";
 } else {
 	// If there wasn't an error, loop through the posts we got.
 	// If we're viewing a single post, there will be one element in the array.
-	foreach ($Blog->entries as $entry) {
+	foreach ($Blog->posts as $entry) {
 		echo "<article style='margin-top: 32px;'>";
 
 		// Include a link to the single post if we're viewing the archive
-		if ($Blog->page === Page::Archive) {
-			echo "<h2><a href='{$root}{$entry->slug}'>{$entry->title}</a></h2>";
+		if ($Blog->url === Url::Archive) {
+			echo "<h2><a href='" . get_post_link($entry->slug) . "'>{$entry->title}</a></h2>";
 		} else {
 			// Otherwise just include the post's featured image, title and content.
-			echo "<img src='{$entry->image}' />";
+			if ($entry->has_image()) {
+				echo "<img src='{$entry->image}' />";
+			}
 			echo "<h2>{$entry->title}</h2>";
 			echo $entry->content;
 			if ($entry->has_tags()) {

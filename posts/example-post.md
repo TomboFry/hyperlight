@@ -14,7 +14,7 @@ By default, this blog engine supports markdown as long as you've got the `parsed
 
 Images! You can put one anywhere in the middle of your post:
 
-![Lorem Pixel Image](http://lorempixel.com/1024/480/)
+![Lorem Pixel Image](https://lorempixel.com/1024/480/)
 
 Code! Here's some simple Rust code:
 

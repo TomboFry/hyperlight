@@ -1,7 +1,3 @@
-<?php
-$colour = "#32B2EE";
-$colour_dark = "#0087D5";
-?>
 <!DOCTYPE html>
 <html lang="en">
 <title><?php echo $Blog->get_title(); ?></title>
@@ -49,10 +45,9 @@ $colour_dark = "#0087D5";
 
 	/* Code blocks */
 	pre[class*="language-"] {
-		padding: 1em;
+		padding: 32px;
 		margin: .5em 0;
 		overflow: auto;
-		border-radius: 0.3em;
 	}
 
 	:not(pre) > code[class*="language-"],
@@ -174,7 +169,7 @@ $colour_dark = "#0087D5";
 		text-decoration: none;
 	}
 	a:hover {
-		color: <?php echo $colour_dark; ?>;
+		color: <?php echo $colour_hover; ?>;
 		text-decoration: underline;
 	}
 
@@ -193,15 +188,9 @@ $colour_dark = "#0087D5";
 		font-size: 0.6em;
 		line-height: 1.618;
 	}
-	.entry .tags a:after {
-		content: ', ';
-	}
-	.entry .tags a:last-of-type:after {
-		content: '';
-	}
-	.entry img {
-		max-width: 100%;
-		max-width: calc(100% + 64px);
+	.entry img, pre[class*="language-"] {
+		width: 100%;
+		width: calc(100% + 64px);
 		margin-left: -32px;
 	}
 	.entry h1, .entry h2, .entry h3, .entry h4, .entry h5, .entry h6,
@@ -220,7 +209,6 @@ $colour_dark = "#0087D5";
 		margin-left: 32px;
 	}
 	.entry blockquote {
-		/*font-family: "Droid Serif", serif;*/
 		font-style: italic;
 		color: #555;
 		padding-left: 32px;
@@ -317,8 +305,12 @@ $colour_dark = "#0087D5";
 	<nav class="nav">
 		<ul>
 			<li><a href="<?php get_home_link(); ?>">Home</a></li>
-			<li><a href="https://github.com/tombofry/hyperlight">HyperLight on GitHub</a></li>
-			<li><a href="http://example.com">Example</a></li>
+			<?php
+				$root = Config::Root;
+				foreach ($Blog->pages as $Page) {
+					echo "<li><a href='{$root}{$Page->slug}'>{$Page->title}</a></li>";
+				}
+			?>
 		</ul>
 	</nav>
 	<div class="entries">

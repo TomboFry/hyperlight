@@ -1,6 +1,6 @@
 <?php
 
-// Edit these variables to your liking
+// Edit these variables to your liking, just don't remove any.
 
 abstract class Config {
 	// The path the blog resides in on your server
@@ -14,8 +14,11 @@ abstract class Config {
 	// The location to store the blog posts in
 	const PostsDirectory = "posts/";
 
+	// The location to store the pages in
+	const PagesDirectory = "pages/";
+
 	// The theme to use. This folder must exist in the "themes" directory with an index.php file to run.
-	const Theme = "uberlight";
+	const Theme = "hyperlight";
 
 	// The text that appears at the bottom of each page (theme dependant)
 	const Footer = "&copy; Tom Gardiner 2017";
@@ -29,7 +32,12 @@ abstract class Config {
 	// Determines whether or not to use Parsedown, which converts markdown documents into HTML.
 	const Parsedown = true;
 
+	// What format to print the date on posts
 	const DatePretty = "l jS F o, H:i:s";
+
+	// What to put in between the Post title and the site title
+	// eg. "Latest Post | My Site"
+	const TitleSeparator = " | ";
 }
 
 /**
@@ -60,6 +68,16 @@ function get_page_url() {
 		$str .= "tag/{$_GET['tag']}/";
 	}
 	return $str;
+}
+
+// Returns a link to a specific blog post
+function get_post_link($post_slug) {
+	return Config::Root . "post/" . $post_slug;
+}
+
+// Returns a link to a specific blog post
+function get_tag_link($tag_slug) {
+	return Config::Root . "tag/" . $tag_slug;
 }
 
 // Returns whether we can use the markdown conversion

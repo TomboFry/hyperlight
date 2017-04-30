@@ -1,19 +1,20 @@
 <?php
 
-include("header.php");
+// Edit to change the accent colours
+$colour = "#32B2EE";
+$colour_hover = "#0087D5";
 
-if ($Blog->page === Page::Error404) {
+include("header.php");
+include("single.php");
+
+if ($Blog->url === Url::Error404) {
 	include("404.php");
-} else if (count($Blog->entries) === 0) {
+} else if (count($Blog->posts) === 0) {
 	include("empty.php");
 } else {
-	include("single.php");
-	foreach ($Blog->entries as $entry) {
-		if ($Blog->page === Page::Single) {
-			post($entry, true);
-		} else {
-			post($entry, false);
-		}
+	foreach ($Blog->posts as $entry) {
+		$full = ($Blog->url === Url::Post || $Blog->url === Url::Page);
+		post($entry, $full);
 	}
 }
 

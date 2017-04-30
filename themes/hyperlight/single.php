@@ -12,7 +12,7 @@ function post($entry, $full) {
 		echo "<h2>{$entry->title}</h2>";
 		echo "<div class='content'>{$entry->content}</div>";
 	} else {
-		echo "<h2><a href='{$root}{$entry->slug}'>{$entry->title}</a></h2>";
+		echo "<h2><a href='{$root}post/{$entry->slug}'>{$entry->title}</a></h2>";
 		echo "<div class='content'><p>{$entry->summary}</p></div>";
 	}
 
@@ -22,7 +22,7 @@ function post($entry, $full) {
 	if ($entry->has_tags()) {
 		echo "<div class='tags'>Tags: ";
 		foreach ($entry->tags as $tag) {
-			echo "<a href='{$root}tag/{$tag}'>{$tag}</a>";
+			echo "<a href='" . get_tag_link($tag) . "'>{$tag}</a>; ";
 		}
 		echo "</div>";
 	}
