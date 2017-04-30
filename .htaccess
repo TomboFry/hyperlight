@@ -1,8 +1,8 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 
-	RewriteRule ^post\/([A-Za-z0-9-_\s]+)\/?$ /index.php?post=$1 [L]
-	RewriteRule ^([A-Za-z0-9-_\s]+)\/?$ /index.php?page=$1 [L]
-	RewriteRule ^tag\/([A-Za-z0-9-_\s]+)\/?.*$ /index.php?tag=$1
-	RewriteRule ^(.*\/)?p\/([0-9]+)\/?$ /index.php?pagination=$2&%{QUERY_STRING} [L]
+	RewriteRule ^post\/([A-Za-z0-9-_\s]+)\/?$ index.php?post=$1 [L]
+	RewriteRule ^([A-Za-z0-9-_\s]+)\/?$ index.php?page=$1 [L]
+	RewriteRule ^tag\/([A-Za-z0-9-_\s]+)\/?.*$ index.php?tag=$1
+	RewriteRule ^(.*\/)?p\/([0-9]+)\/?$ index.php?pagination=$2&%{QUERY_STRING} [L]
 </IfModule>
