@@ -6,19 +6,28 @@ Hyperlight is yet another PHP flat-file blog engine with the intent of being inc
 
 * **11.1KB** installed size (disclaimer: with the smallest packaged theme (uberlight) and no markdown support. Full download size: 76KB)
 * Markdown parsing, thanks to [Parsedown](https://github.com/erusev/parsedown) (optional, adds 37kb to installation)
-* Theme support (see `themes/uberlight/index.php` for a quick guide)
+* Theme support
 * Pagination
 * Post tags
 * No database required
 
 ## Requirements
 
-* PHP (tested on 5.6)
 * Apache mod_rewrite engine
+* PHP (tested on 5.5 and 7.1)
 
 ## Demo
 
 A demo of the initial installation state can be found here: [https://tombofry.co.uk/hyperlight](https://tombofry.co.uk/hyperlight)
+
+## Documentation/Manual
+
+To get the most out of Hyperlight, it is imperative that you [read the manual](https://tombofry.co.uk/hyperlight/docs/). It contains:
+
+* Super simple installation steps
+* Configuring your installation
+* Writing posts/pages
+* How to write custom themes
 
 ## No Admin Panel
 
@@ -27,19 +36,3 @@ Hey, every piece of software has its problems, this has one that you could consi
 As a result, this means you will have to upload images manually and link to them yourself, too.
 
 I do plan on adding this feature at some point.
-
-## Blog Post Format
-
-The first five lines of every blog post must contain the following:
-
-* Line 1: Post Title
-* Line 2: Short summary of the post
-* Line 3: Featured Image URL
-* Line 4: Tags, separated with a comma and a space (", ")
-* Line 5: Anything, just for separation between metadata and content
-
-Lines 2, 3, and 4 are optional but if omitted must still be an empty line.
-
-Everything else below that will be parsed as markdown (or plain text, your choice).
-
-Two example posts are included to see how everything is setup, one with a summary but no image, and one with an image but no summary.
