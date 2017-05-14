@@ -75,12 +75,12 @@ function get_post_link($post_slug) {
 	return Config::Root . "post/" . $post_slug;
 }
 
-// Returns a link to a specific blog post
+// Returns a link to the archive of a specific tag
 function get_tag_link($tag_slug) {
 	return Config::Root . "tag/" . $tag_slug;
 }
 
 // Returns whether we can use the markdown conversion
 function using_parsedown() {
-	return file_exists("parsedown.php");
+	return (file_exists("parsedown.php") && Config::Parsedown);
 }
