@@ -62,6 +62,11 @@ function get_home_link() {
 	echo Config::Root;
 }
 
+// Returns the full URL, including "http(s)"
+function get_full_url() {
+	return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI];
+}
+
 // Returns the current page, including whether a tag was included
 function get_page_url() {
 	$str = Config::Root;
