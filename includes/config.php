@@ -1,4 +1,5 @@
 <?php
+if (!defined("HYPERLIGHT_INIT")) die();
 
 // Edit these variables to your liking, just don't remove any.
 
@@ -82,5 +83,5 @@ function get_tag_link($tag_slug) {
 
 // Returns whether we can use the markdown conversion
 function using_parsedown() {
-	return (file_exists("parsedown.php") && Config::Parsedown);
+	return (file_exists("includes/parsedown.php") && Config::Parsedown);
 }

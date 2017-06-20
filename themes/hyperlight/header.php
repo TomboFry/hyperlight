@@ -1,3 +1,4 @@
+<?php if (!defined("HYPERLIGHT_INIT")) die(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <title><?php echo $Blog->get_title(); ?></title>

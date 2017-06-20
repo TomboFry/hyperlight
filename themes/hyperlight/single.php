@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined("HYPERLIGHT_INIT")) die();
 
 function post($entry, $full) {
 	$root = Config::Root;

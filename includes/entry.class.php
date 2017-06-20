@@ -1,4 +1,6 @@
 <?php
+if (!defined("HYPERLIGHT_INIT")) die();
+
 class Entry {
 	public $title;
 	public $slug;

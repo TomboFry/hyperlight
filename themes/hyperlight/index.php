@@ -1,5 +1,7 @@
 <?php
 
+if (!defined("HYPERLIGHT_INIT")) die();
+
 // Edit to change the accent colours
 $colour = "#32B2EE";
 $colour_hover = "#0087D5";

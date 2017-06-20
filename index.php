@@ -1,13 +1,15 @@
 <?php
 
+define("HYPERLIGHT_INIT", "true");
+
 // Make sure these files exist before making this blog public facing.
-require("config.php");
-include("blog.class.php");
-include("entry.class.php");
+require("includes/config.php");
+include("includes/blog.class.php");
+include("includes/entry.class.php");
 
 // Parsedown is optional, it adds support for markdown blog posts, but also adds 40kb to the installation
 if (using_parsedown()) {
-	include("parsedown.php");
+	include("includes/parsedown.php");
 }
 
 /*

@@ -1,4 +1,6 @@
 <?php
+// This check is to make sure the user is actually running on hyperlight and not trying to access the file purposely
+if (!defined("HYPERLIGHT_INIT")) die();
 // First, get these variables purely for ease later on.
 $root = Config::Root;
 $title = Config::Title;

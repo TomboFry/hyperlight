@@ -1,4 +1,5 @@
 <?php
+if (!defined("HYPERLIGHT_INIT")) die();
 
 #
 #

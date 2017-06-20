@@ -1,3 +1,4 @@
+<?php if (!defined("HYPERLIGHT_INIT")) die(); ?>
 	</div>
 </div>
 <?php if ($Blog->has_pagination()) { ?>
