@@ -47,6 +47,12 @@ if (not_blank('post')) {
 //
 $Blog = new Blog($post_slug, $page_slug, $pagination, $tag);
 
+if (not_blank('rss')) {
+	$rss = $_GET['rss'];
+	include("includes/rss.php");
+	die();
+}
+
 // Now run the theme
 include("themes/" . Config::Theme . "/index.php");
 

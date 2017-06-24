@@ -22,7 +22,7 @@ abstract class Config {
 	const Theme = "hyperlight";
 
 	// The text that appears at the bottom of each page (theme dependant)
-	const Footer = "&copy; Tom Gardiner 2017";
+	const Footer = "&copy; Your Name Here 2017";
 
 	// How many posts to display per page before requiring pagination
 	const PostsPerPage = 10;
@@ -63,8 +63,12 @@ function get_home_link() {
 }
 
 // Returns the full URL, including "http(s)"
+function get_base_url() {
+	return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'];
+}
+// Returns the full URL, including "http(s)"
 function get_full_url() {
-	return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI];
+	return get_base_url() . $_SERVER['REQUEST_URI'];
 }
 
 // Returns the current page, including whether a tag was included

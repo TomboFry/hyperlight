@@ -9,20 +9,20 @@ function post($entry, $full) {
 		if ($entry->has_image()) {
 			echo "<img class='featured' src='{$entry->image}' />";
 		}
-		echo "<h2>{$entry->title}</h2>";
+		echo "<h2 class='entry-title'>{$entry->title}</h2>";
 		echo "<div class='content'>{$entry->content}</div>";
 	} else {
-		echo "<h2><a href='{$root}post/{$entry->slug}'>{$entry->title}</a></h2>";
-		echo "<div class='content'><p>{$entry->summary}</p></div>";
+		echo "<h2 class='entry-title'><a href='{$root}post/{$entry->slug}'>{$entry->title}</a></h2>";
+		echo "<p class='summary'>{$entry->summary}</p>";
 	}
 
 	// Post Metadata, including date posted and tags
 	echo "<div class='metadata'>";
-	echo "<time datetime={$entry->date_datetime()}>Posted on {$entry->date_pretty()}</time>";
-	if ($entry->has_tags()) {
+	echo "<time datetime={$entry->date_datetime()}>{$entry->date_pretty()}</time>";
+	if ($entry->has_tags() && $full === true) {
 		echo "<div class='tags'>Tags: ";
 		foreach ($entry->tags as $tag) {
-			echo "<a href='" . get_tag_link($tag) . "'>{$tag}</a>; ";
+			echo "<a class='tag' href='" . get_tag_link($tag) . "'>{$tag}</a>";
 		}
 		echo "</div>";
 	}
