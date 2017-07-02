@@ -1,5 +1,7 @@
 <?php
 
+if (!defined("HYPERLIGHT_INIT")) die();
+
 function rss_xml($Blog) {
 	$title = Config::Title;
 	$url = get_base_url() . Config::Root;

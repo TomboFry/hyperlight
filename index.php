@@ -52,6 +52,10 @@ if (not_blank('rss')) {
 	include("includes/rss.php");
 	die();
 }
+if (not_blank('sitemap')) {
+	include("includes/sitemap.php");
+	die();
+}
 
 // Now run the theme
 include("themes/" . Config::Theme . "/index.php");
