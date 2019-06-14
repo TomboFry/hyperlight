@@ -22,7 +22,7 @@ abstract class Config {
 	const Theme = "hyperlight";
 
 	// The text that appears at the bottom of each page (theme dependant)
-	const Footer = "&copy; Your Name Here 2017";
+	const Footer = "&copy; Your Name Here 2019";
 
 	// How many posts to display per page before requiring pagination
 	const PostsPerPage = 10;
