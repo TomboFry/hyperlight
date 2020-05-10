@@ -18,7 +18,7 @@ class Blog {
 	private $_page_num;
 	private $_page_num_total;
 
-	function __construct($post_slug, $page_slug, $pagination, $tag_slug) {
+	function __construct($post_slug, $page_slug, $pagination, $tag_slug, $is_rss) {
 
 		$this->pages = Blog::loadPages();
 
@@ -50,8 +50,11 @@ class Blog {
 			$length = Config::PostsPerPage;
 			$this->_page_num_total = ceil(count($this->posts) / $length);
 
-			// Only return the posts that appear on that page.
-			$this->posts = array_slice($this->posts, $offset, $length);
+			// Only return the posts that appear on that page, if
+			// displaying the archive page.
+			if ($is_rss !== true) {
+				$this->posts = array_slice($this->posts, $offset, $length);
+			}
 			$this->url = Url::Archive;
 		}
 	}

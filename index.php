@@ -20,6 +20,7 @@ $post_slug = "";
 $page_slug = "";
 $pagination = 0;
 $tag = "";
+$is_rss = not_blank('rss');
 
 function not_blank($var) {
 	return (isset($_GET[$var]) && $_GET[$var] !== "");
@@ -45,9 +46,9 @@ if (not_blank('post')) {
 
 // Initialise the blog
 //
-$Blog = new Blog($post_slug, $page_slug, $pagination, $tag);
+$Blog = new Blog($post_slug, $page_slug, $pagination, $tag, $is_rss);
 
-if (not_blank('rss')) {
+if ($is_rss === true) {
 	$rss = $_GET['rss'];
 	include("includes/rss.php");
 	die();
