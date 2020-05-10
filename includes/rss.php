@@ -18,6 +18,7 @@ $mime_types = [
 ];
 
 function rss_image_details ($post) {
+	global $url_base;
 	global $mime_types;
 
 	if (empty($post->image)) return;
@@ -31,12 +32,23 @@ function rss_image_details ($post) {
 		$image_mime = $mime_types[$ext];
 	}
 
+	// Get image size, if image URL is local to the server
+	$image_size = 0;
+	$image_local = substr($image_url, 0, strlen($url_base)) === $url_base;
+	if ($image_local === true) {
+		$image_url_rel = substr($image_url, strlen($url_base));
+		if (file_exists($image_url_rel)) {
+			$image_size = filesize($image_url_rel);
+		}
+	}
+
 	// Use enclosure built-in method
-	if ($image_mime !== "") {
+	// Note: Both type and length fields are required
+	if ($image_mime !== "" && $image_size > 0) {
 		echo "<enclosure ";
 		echo "url=\"{$image_url}\" ";
 		echo "type=\"{$image_mime}\" ";
-		// TODO: Determine image size in bytes
+		echo "length=\"{$image_size}\" ";
 		echo "/>";
 	}
 
@@ -45,6 +57,7 @@ function rss_image_details ($post) {
 	echo "xmlns:media=\"http://search.yahoo.com/mrss/\" ";
 	echo "url=\"{$image_url}\" medium=\"image\" ";
 	if ($image_mime !== "") echo "type=\"{$image_mime}\" ";
+	if ($image_size > 0) echo "fileSize=\"{$image_size}\" ";
 	echo "/>";
 }
 
@@ -82,7 +95,11 @@ function rss_xml($Blog) {
 
 	header("Content-Type: application/rss+xml;");
 	echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>
-<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">
+<rss
+	version=\"2.0\"
+	xmlns:atom=\"http://www.w3.org/2005/Atom\"
+	xmlns:media=\"http://search.yahoo.com/mrss/\"
+>
 <channel>
 	<title>{$title}</title>
 	<atom:link href=\"{$url_base}rss\" rel=\"self\" type=\"application/rss+xml\" />
