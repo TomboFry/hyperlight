@@ -3,6 +3,50 @@
 if (!defined("HYPERLIGHT_INIT")) die();
 
 $url_base = get_base_url() . Config::Root;
+$mime_types = [
+	'png' => 'image/png',
+	'jpe' => 'image/jpeg',
+	'jpeg' => 'image/jpeg',
+	'jpg' => 'image/jpeg',
+	'gif' => 'image/gif',
+	'bmp' => 'image/bmp',
+	'ico' => 'image/vnd.microsoft.icon',
+	'tiff' => 'image/tiff',
+	'tif' => 'image/tiff',
+	'svg' => 'image/svg+xml',
+	'svgz' => 'image/svg+xml',
+];
+
+function rss_image_details ($post) {
+	global $mime_types;
+
+	if (empty($post->image)) return;
+	$image_url = $post->image;
+
+	// Get image MIME-type
+	$image_mime = "";
+	$image_segments = explode('.', $image_url);
+	$ext = strtolower(array_pop($image_segments));
+	if (array_key_exists($ext, $mime_types)) {
+		$image_mime = $mime_types[$ext];
+	}
+
+	// Use enclosure built-in method
+	if ($image_mime !== "") {
+		echo "<enclosure ";
+		echo "url=\"{$image_url}\" ";
+		echo "type=\"{$image_mime}\" ";
+		// TODO: Determine image size in bytes
+		echo "/>";
+	}
+
+	// Use media:content extension
+	echo "<media:content ";
+	echo "xmlns:media=\"http://search.yahoo.com/mrss/\" ";
+	echo "url=\"{$image_url}\" medium=\"image\" ";
+	if ($image_mime !== "") echo "type=\"{$image_mime}\" ";
+	echo "/>";
+}
 
 function rss_post ($post) {
 	global $url_base;
@@ -23,6 +67,9 @@ function rss_post ($post) {
 	foreach ($post->tags as $key => $category) {
 		echo "<category>{$category}</category>";
 	}
+
+	// Print image
+	rss_image_details($post);
 
 	echo "</item>";
 }
