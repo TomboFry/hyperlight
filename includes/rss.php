@@ -2,9 +2,35 @@
 
 if (!defined("HYPERLIGHT_INIT")) die();
 
+$url_base = get_base_url() . Config::Root;
+
+function rss_post ($post) {
+	global $url_base;
+
+	$pubDate = gmdate(DATE_RFC2822, $post->timestamp);
+	echo "\n<item>";
+
+	// Print required information
+	echo "<title>{$post->title}</title>";
+	echo "<pubDate>{$pubDate}</pubDate>";
+	echo "<link>{$url_base}post/{$post->slug}</link>";
+	echo "<guid>{$url_base}post/{$post->slug}</guid>";
+
+	// Print description
+	if ($post->summary !== "") { echo "<description>{$post->summary}</description>"; }
+
+	// Print categories
+	foreach ($post->tags as $key => $category) {
+		echo "<category>{$category}</category>";
+	}
+
+	echo "</item>";
+}
+
 function rss_xml($Blog) {
+	global $url_base;
+
 	$title = Config::Title;
-	$url = get_base_url() . Config::Root;
 	$lastBuildDate = gmdate(DATE_RFC2822, $Blog->posts[0]->timestamp);
 
 	header("Content-Type: application/rss+xml;");
@@ -12,24 +38,15 @@ function rss_xml($Blog) {
 <rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">
 <channel>
 	<title>{$title}</title>
-	<atom:link href=\"{$url}rss\" rel=\"self\" type=\"application/rss+xml\" />
+	<atom:link href=\"{$url_base}rss\" rel=\"self\" type=\"application/rss+xml\" />
 	<description>{$title}</description>
 	<generator>Hyperlight CMS</generator>
-	<link>{$url}</link>
+	<link>{$url_base}</link>
 	<lastBuildDate>{$lastBuildDate}</lastBuildDate>";
-	foreach ($Blog->posts as $key => $post) {
-		$pubDate = gmdate(DATE_RFC2822, $post->timestamp);
-		echo "<item>";
-		echo "<title>{$post->title}</title>";
-		echo "<pubDate>{$pubDate}</pubDate>";
-		echo "<link>{$url}post/{$post->slug}</link>";
-		echo "<guid>{$url}post/{$post->slug}</guid>";
-		if ($post->summary !== "") { echo "<description>{$post->summary}</description>"; }
-		foreach ($post->tags as $key => $category) {
-			echo "<category>{$category}</category>";
-		}
-		echo "</item>";
-	}
+
+	// Print each article
+	array_walk($Blog->posts, 'rss_post');
+
 	echo "</channel></rss>";
 }
 
