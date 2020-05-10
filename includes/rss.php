@@ -34,16 +34,13 @@ function rss_xml($Blog) {
 }
 
 switch ($rss) {
-	case "xml":
-		rss_xml($Blog);
-		break;
 	case "json":
 		header("Content-Type: application/json;");
 		echo json_encode($Blog->posts);
 		break;
+	case "xml":
 	default:
-		header("HTTP/1.0 404 Not Found");
-		die("HTTP/1.0 404 Not Found");
+		rss_xml($Blog);
 		break;
 }
 ?>
