@@ -14,7 +14,7 @@ By default, this blog engine supports markdown as long as you've got the `parsed
 
 Images! You can put one anywhere in the middle of your post:
 
-![Lorem Flickr Image](https://loremflickr.com/1024/480/)
+![Austrian Mountains](https://i.imgur.com/BCkiIC9.jpg)
 
 Code! Here's some simple Rust code:
 
