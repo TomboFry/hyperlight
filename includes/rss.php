@@ -14,6 +14,7 @@ function rss_xml($Blog) {
 	<title>{$title}</title>
 	<atom:link href=\"{$url}rss\" rel=\"self\" type=\"application/rss+xml\" />
 	<description>{$title}</description>
+	<generator>Hyperlight CMS</generator>
 	<link>{$url}</link>
 	<lastBuildDate>{$lastBuildDate}</lastBuildDate>";
 	foreach ($Blog->posts as $key => $post) {
