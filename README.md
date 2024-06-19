@@ -1,11 +1,14 @@
 # Hyperlight
 
-Hyperlight is yet another PHP flat-file blog engine with the intent of being incredibly small and fast.
+Hyperlight is (yet another) PHP flat-file blog engine, which is light on code
+and easily extensible.
 
 ## Features
 
-* **14.7KB** installed size (disclaimer: with the smallest packaged theme (uberlight) and no markdown support. Full download size: 76KB)
-* Markdown parsing, thanks to [Parsedown](https://github.com/erusev/parsedown) (optional, adds 37kb to installation)
+* **14.7KB** installed size (disclaimer: with the smallest packaged theme
+  (uberlight) and no markdown support. Full download size: 76KB)
+* Markdown parsing, thanks to [Parsedown](https://github.com/erusev/parsedown)
+  (optional, adds 37kb to installation)
 * Theme support
 * Pagination
 * RSS Feed (`/rss.xml`) & Sitemap (`/sitemap.xml`)
@@ -14,16 +17,22 @@ Hyperlight is yet another PHP flat-file blog engine with the intent of being inc
 
 ## Requirements
 
-* Apache mod_rewrite engine
-* PHP (tested on 5.5 and 7.1)
+* Apache `mod_rewrite` engine
+* PHP (tested on 8.3, but should work all the way back to 5.5 if you're a
+  maniac!)
 
 ## Demo
 
-A demo of the initial installation state can be found here: [https://tombofry.co.uk/hyperlight](https://tombofry.co.uk/hyperlight)
+A demo of the initial installation state can be found here:
+<https://tombofry.co.uk/hyperlight/>
 
 ## Documentation/Manual
 
-To get the most out of Hyperlight, it is imperative that you [read the manual](https://tombofry.co.uk/hyperlight/docs/). It contains:
+> [!NOTE]
+> The docs have been unavailable for a while. I'll write up a new version soon
+> that's directly available within the repo.
+
+~~To get the most out of Hyperlight, it is imperative that you [read the manual](https://tombofry.co.uk/hyperlight/docs/)~~. It contains:
 
 * Super simple installation steps
 * Configuring your installation
@@ -32,8 +41,7 @@ To get the most out of Hyperlight, it is imperative that you [read the manual](h
 
 ## No Admin Panel
 
-Hey, every piece of software has its problems, this has one that you could consider intentional. There's no admin panel to write posts and change settings - all configuration must be done manually. However, all this requires is changing one file (`config.php`) with the values you want.
-
-As a result, this means you will have to upload images manually and link to them yourself, too.
-
-I do plan on adding this feature at some point.
+As there's no admin panel, compared to other popular blogs/CMSes, to change your
+site config and write posts/pages you'll need to manually edit files. As a
+result, this means you will have to upload images manually and link to them
+yourself, too.
