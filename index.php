@@ -34,6 +34,13 @@ if (not_blank('post')) {
 } else if (not_blank('page')) {
 	$page_slug = $_GET['page'];
 
+	// Handle redirections and exit
+	if (array_key_exists($page_slug, Config::Redirections)) {
+		http_response_code(301);
+		header('Location: ' . Config::Redirections[$page_slug]);
+		exit;
+	}
+
 // Show the archive with/without a tag
 } else {
 	if (not_blank('tag')) {

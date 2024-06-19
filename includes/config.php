@@ -22,7 +22,7 @@ abstract class Config {
 	const Theme = "hyperlight";
 
 	// The text that appears at the bottom of each page (theme dependant)
-	const Footer = "&copy; Your Name Here 2020";
+	const Footer = "&copy; Your Name Here";
 
 	// How many posts to display per page before requiring pagination
 	const PostsPerPage = 10;
@@ -39,6 +39,14 @@ abstract class Config {
 	// What to put in between the Post title and the site title
 	// eg. "Latest Post | My Site"
 	const TitleSeparator = " | ";
+
+	// Set up a list of redirections - useful if your main site is hosted
+	// using hyperlight and want a short URL to go somewhere else.
+	// If, for example, you're hosted on `https://example.com`, the example
+	// below would take you to my website if you visit `https://example.com/tombofry`
+	const Redirections = [
+		"tombofry" => "https://www.tombofry.co.uk/",
+	];
 }
 
 /**
