@@ -8,6 +8,7 @@
 <meta property="og:url" content="<?php echo get_full_url(); ?>" />
 <meta property="og:title" content="<?php echo $Blog->get_title(); ?>" />
 <meta name="twitter:title" content="<?php echo $Blog->get_title(); ?>" />
+<link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS Feed">
 <?php
 if ($Blog->url === Url::Post || $Blog->url === Url::Page) {
 	$post = $Blog->posts[0];

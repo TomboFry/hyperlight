@@ -8,7 +8,7 @@ Hyperlight is yet another PHP flat-file blog engine with the intent of being inc
 * Markdown parsing, thanks to [Parsedown](https://github.com/erusev/parsedown) (optional, adds 37kb to installation)
 * Theme support
 * Pagination
-* RSS Feed (`/rss`) & Sitemap (`/sitemap`) for SEO
+* RSS Feed (`/rss.xml`) & Sitemap (`/sitemap.xml`)
 * Post tags
 * No database required
 

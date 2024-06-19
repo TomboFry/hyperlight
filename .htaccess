@@ -6,8 +6,14 @@
 	# Options FollowSymLinks
 
 	RewriteRule ^sitemap\/?$ index.php?sitemap=true [L]
+	RewriteRule ^sitemap\.xml$ index.php?sitemap=true [L]
+
+	# RSS feed
 	RewriteRule ^rss\/?$ index.php?rss=xml [L]
 	RewriteRule ^rss\/([a-z]+)$ index.php?rss=$1 [L]
+	RewriteRule ^rss\.xml$ index.php?rss=xml [L]
+	RewriteRule ^rss\.json$ index.php?rss=json [L]
+
 	RewriteRule ^post\/([A-Za-z0-9-_\s]+)\/?$ index.php?post=$1 [L]
 	RewriteRule ^([A-Za-z0-9-_\s]+)\/?$ index.php?page=$1 [L]
 	RewriteRule ^tag\/([A-Za-z0-9-_\s]+)\/?.*$ index.php?tag=$1
