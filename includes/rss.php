@@ -76,8 +76,8 @@ function rss_post ($post) {
 	echo "<link>{$url_base}post/{$post->slug}</link>";
 	echo "<guid>{$url_base}post/{$post->slug}</guid>";
 
-	// Print description
-	if ($post->summary !== "") { echo "<description>{$post->summary}</description>"; }
+	// Print article contents
+	echo "<description><![CDATA[{$post->content}]]></description>";
 
 	// Print categories
 	foreach ($post->tags as $key => $category) {
