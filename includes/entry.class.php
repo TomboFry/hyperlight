@@ -76,8 +76,17 @@ class Entry {
 	public function date_pretty() {
 		return gmdate(Config::DatePretty, $this->timestamp);
 	}
+
 	public function date_datetime() {
-		return gmdate("Y-m-d\TH:i:s", $this->timestamp);
+		return gmdate('Y-m-d\TH:i:s', $this->timestamp);
+	}
+
+	public function edited_pretty() {
+		return gmdate(Config::DatePretty, $this->edited);
+	}
+
+	public function edited_datetime() {
+		return gmdate('Y-m-d\TH:i:s', $this->edited);
 	}
 }
 
