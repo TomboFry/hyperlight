@@ -4,6 +4,9 @@ if (!defined("HYPERLIGHT_INIT")) die();
 
 $url_base = get_base_url() . Config::Root;
 $mime_types = [
+	'apng' => 'image/apng',
+	'webp' => 'image/webp',
+	'avif' => 'image/avif',
 	'png' => 'image/png',
 	'jpe' => 'image/jpeg',
 	'jpeg' => 'image/jpeg',
