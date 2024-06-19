@@ -46,7 +46,16 @@ class Entry {
 		} else {
 			$this->content = "<p>" . implode("<br/>", array_slice($lines, $metadata_length)) . "</p>";
 		}
-		$this->timestamp = filectime($fullpath);
+
+		// Optionally sets post date based on filenames starting with an
+		// ISO date. eg. "posts/2024-01-01-hello-world.md" will set the
+		// timestamp to January 1st, 2024.
+		if (preg_match('/^(\d{4}-\d{2}-\d{2})/', $slug, $isodate)) {
+			$this->timestamp = strtotime($isodate[1] . "T00:00:00.000Z");
+		} else {
+			// Fall back to using the file's "modified" timestamp
+			$this->timestamp = filemtime($fullpath);
+		}
 		$this->edited = filemtime($fullpath);
 	}
 
