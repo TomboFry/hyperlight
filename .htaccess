@@ -1,6 +1,10 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 
+	# You may or may not need to uncomment this option, if you are getting a
+	# forbidden error when you load the page:
+	# Options FollowSymLinks
+
 	RewriteRule ^sitemap\/?$ index.php?sitemap=true [L]
 	RewriteRule ^rss\/?$ index.php?rss=xml [L]
 	RewriteRule ^rss\/([a-z]+)$ index.php?rss=$1 [L]
