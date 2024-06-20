@@ -5,8 +5,8 @@ and easily extensible.
 
 ## Features
 
-* **14.7KB** installed size (disclaimer: with the smallest packaged theme
-  (uberlight) and no markdown support. Full download size: 76KB)
+* **17.4 kB** installed size (disclaimer: with the smallest packaged theme
+  (uberlight) and no markdown support. Full download size: 84 kB)
 * Markdown parsing, thanks to [Parsedown](https://github.com/erusev/parsedown)
   (optional, adds 37kb to installation)
 * Theme support
@@ -28,11 +28,8 @@ A demo of the initial installation state can be found here:
 
 ## Documentation/Manual
 
-> [!NOTE]
-> The docs have been unavailable for a while. I'll write up a new version soon
-> that's directly available within the repo.
-
-~~To get the most out of Hyperlight, it is imperative that you [read the manual](https://tombofry.co.uk/hyperlight/docs/)~~. It contains:
+Please read the [documentation/set-up guide](./Documentation.md), as it
+contains:
 
 * Super simple installation steps
 * Configuring your installation
