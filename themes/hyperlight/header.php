@@ -8,6 +8,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="og:title" content="<?php echo $Blog->get_title(); ?>" />
 <meta name="twitter:title" content="<?php echo $Blog->get_title(); ?>" />
+<meta name="description" content="<?php echo $Blog->get_description(); ?>" />
 <meta property="og:url" content="<?php echo $Blog->get_canonical_url(); ?>" />
 <?php
 if ($Blog->url === Url::Post || $Blog->url === Url::Page) {
@@ -15,11 +16,6 @@ if ($Blog->url === Url::Post || $Blog->url === Url::Page) {
 	if ($post->has_image()) {
 		echo "<meta name='twitter:image' content='{$post->image}' />";
 		echo "<meta property='og:image' content='{$post->image}' />";
-	}
-	if ($post->summary != "") {
-		$htmlsummary = htmlentities($post->summary);
-		echo '<meta name="twitter:description" content="' . $htmlsummary . '" />';
-		echo '<meta property="og:description" content="' . $htmlsummary . '" />';
 	}
 } ?>
 <link rel="stylesheet" type="text/css" href="<?php echo Config::get_theme_css_dir(); ?>/style.css">
