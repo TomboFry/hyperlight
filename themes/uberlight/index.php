@@ -11,7 +11,7 @@ $footer = Config::Footer;
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<link rel="alternate" type="application/rss+xml" href="<?php echo Config::get_base_url() ?>rss.xml">
+<link rel="alternate" type="application/rss+xml" href="<?php echo Blog::get_base_url() ?>rss.xml">
 <meta name="description" content="<?php echo $Blog->get_description(); ?>">
 <title><?php echo $Blog->get_title(); ?></title>
 <?php

@@ -40,7 +40,7 @@ class Entry {
 		}
 
 		$metadata_length = 5;
-		if (Config::using_markdown()) {
+		if (Blog::using_markdown()) {
 			$Parsedown = new Parsedown();
 			$this->content = $Parsedown->text(implode("\n", array_slice($lines, $metadata_length)));
 		} else {
@@ -60,7 +60,7 @@ class Entry {
 	}
 
 	public function get_url() {
-		return Config::get_base_url() . "post/" . $this->slug;
+		return Blog::get_base_url() . "post/" . $this->slug;
 	}
 
 	public function has_image() {
@@ -110,6 +110,6 @@ class Page extends Entry {
 	}
 
 	public function get_url() {
-		return Config::get_base_url() . $this->slug;
+		return Blog::get_base_url() . $this->slug;
 	}
 }

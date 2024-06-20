@@ -194,7 +194,7 @@ class Blog {
 
 	/** Returns the current page, including whether a tag was included */
 	function get_canonical_url(bool $include_page = true) {
-		$url = Config::get_base_url();
+		$url = Blog::get_base_url();
 
 		if ($this->url === Url::Page) {
 			return $url . $this->posts[0]->slug;
@@ -243,5 +243,28 @@ class Blog {
 
 	public function has_page_next() {
 		return $this->_page_num < $this->_page_num_total - 1;
+	}
+
+	static function using_markdown() {
+		return file_exists("includes/parsedown.php") && Config::UseMarkdown;
+	}
+
+	/** Prints out the directory containing CSS files */
+	static function get_theme_css_dir() {
+		return Config::Root . "themes/" . Config::Theme . "/css";
+	}
+
+	/** Prints out the directory containing JS files */
+	static function get_theme_js_dir() {
+		return Config::Root . "themes/" . Config::Theme . "/js";
+	}
+
+	/** Returns the full URL, including "http(s)" */
+	static function get_base_url() {
+		$scheme = isset($_SERVER['REQUEST_SCHEME'])
+			? $_SERVER['REQUEST_SCHEME']
+			: (isset($_SERVER['HTTPS']) ? "https" : "http");
+
+		return $scheme . "://" . $_SERVER['HTTP_HOST'] . Config::Root;
 	}
 }
