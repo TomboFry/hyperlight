@@ -11,8 +11,8 @@ class Entry {
 	public $timestamp;
 	public $edited;
 
-	public function __construct($slug, $tag, $url) {
-		$fullpath = ($url == Url::Post) ? Config::PostsDirectory : Config::PagesDirectory;
+	public function __construct(string $slug, string $tag_filter, Url $url) {
+		$fullpath = ($url === Url::Post) ? Config::PostsDirectory : Config::PagesDirectory;
 		$fullpath .= $slug . ".md";
 
 		if (!file_exists($fullpath)) {
@@ -33,8 +33,8 @@ class Entry {
 			$this->tags = [];
 		}
 
-		if ($tag !== "") {
-			if (!in_array($tag, $this->tags)) {
+		if ($tag_filter !== "") {
+			if (!in_array($tag_filter, $this->tags)) {
 				throw new NotFoundException();
 			}
 		}

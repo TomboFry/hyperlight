@@ -1,21 +1,72 @@
 <?php
 if (!defined("HYPERLIGHT_INIT")) die();
 
-function echo_url($url, $date, $change, $priority) {
-	echo "\n<url><loc>{$url}</loc><lastmod>{$date}</lastmod><changefreq>{$change}</changefreq><priority>{$priority}</priority></url>";
+function array_to_xml(array &$array, string $parent_key = '') {
+	$output = [];
+	if (empty($parent_key)) {
+		array_push($output, '<?xml version="1.0" ?>');
+	}
+
+	foreach ($array as $key => $value) {
+		$new_key = $key;
+		if (is_int($new_key)) {
+			$new_key = $parent_key;
+		}
+
+		if (is_array($value)) {
+			$is_list = array_is_list($value);
+
+			if (!$is_list) array_push($output, "<{$new_key}>");
+			array_push($output, array_to_xml($value, $new_key));
+			if (!$is_list) array_push($output, "</{$new_key}>");
+
+			continue;
+		}
+
+		array_push($output, "<{$new_key}>{$value}</{$new_key}>");
+	}
+	return implode($output);
 }
 
-$base_url = get_base_url() . Config::Root;
-$lastBuildDate = gmdate("c", $Blog->posts[0]->timestamp);
+function generate_sitemap_array(Blog $Blog) {
+	$urls = [
+		[
+			"loc" => Config::get_base_url(),
+			"lastmod" => gmdate("c", $Blog->posts[0]->timestamp),
+			"priority" => "1.0"
+		],
+	];
 
-header("Content-Type: text/xml;");
-echo '<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-echo_url($base_url, $lastBuildDate, "weekly", "1.0");
-foreach ($Blog->pages as $key => $page) {
-	echo_url("{$base_url}{$page->slug}", gmdate("c", $page->edited), "monthly", "0.8");
+	foreach ($Blog->pages as $page) {
+		array_push($urls, [
+			"loc" => $page->get_url(),
+			"lastmod" => gmdate("c", $page->edited),
+			"priority" => "0.8"
+		]);
+	}
+
+	foreach ($Blog->posts as $post) {
+		array_push($urls, [
+			"loc" => $post->get_url(),
+			"lastmod" => gmdate("c", $post->edited),
+			"priority" => "0.5"
+		]);
+	}
+	return [ "urlset" => [ "url" => $urls ] ];
 }
-foreach ($Blog->posts as $key => $post) {
-	echo_url("{$base_url}post/{$post->slug}", gmdate("c", $post->edited), "monthly", "0.5");
+
+function generate_sitemap(Blog $Blog) {
+	$urlset = generate_sitemap_array($Blog);
+	switch ($Blog->content_type) {
+		case '.json':
+			header('Content-Type: application/json');
+			echo json_encode($urlset);
+			break;
+
+		case '.xml':
+		default:
+			header('Content-Type: text/xml');
+			echo array_to_xml($urlset);
+			break;
+	}
 }
-echo "\n</urlset>";

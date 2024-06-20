@@ -29,7 +29,7 @@ echo "</nav>";
 // Check what page we're on and display the relevant content.
 if ($Blog->url === Url::Error404) {
 	echo "<h2>Error 404: Post Not Found</h2>";
-} else if (count($Blog->posts) === 0) {
+} else if (empty($Blog->posts)) {
 	// Only display this if there are no posts in the posts directory
 	echo "<h2>No Posts Found</h2>";
 } else {

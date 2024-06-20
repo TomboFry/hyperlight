@@ -3,46 +3,63 @@ if (!defined("HYPERLIGHT_INIT")) die();
 
 class NotFoundException extends Exception {}
 
-abstract class Url {
-	const Archive = 0;
-	const Post = 1;
-	const Page = 2;
-	const Error404 = 3;
+enum Url {
+	case Archive;
+	case Post;
+	case Page;
+	case Error404;
+	case Rss;
 }
 
 class Blog {
-	public $posts;
-	public $pages;
-	public $url;
+	public array $posts;
+	public array $pages;
+	public Url $url;
+	public string $tag;
+
+	// RSS / Sitemap
+	public string $machine_type;
+	public string $content_type;
 
 	private $_page_num;
 	private $_page_num_total;
 
-	function __construct($post_slug, $page_slug, $pagination, $tag_slug, $is_rss) {
-
+	function __construct(
+		string $post = '',
+		string $page = '',
+		string $tag = '',
+		int $pagination = 0,
+		string $machine_type = '',
+		string $content_type = ''
+	) {
 		$this->pages = Blog::loadPages();
 
 		$this->_page_num = 0;
 		$this->_page_num_total = 1;
 
-		if ($post_slug !== "") {
-			try {
-				$this->posts = [new Post($post_slug, "")];
+		try {
+			if ($post !== "") {
+				$this->posts = [new Post($post, "")];
 				$this->url = Url::Post;
-			} catch (NotFoundException $e) {
-				Header("HTTP/1.1 404 Not Found");
-				$this->url = Url::Error404;
+				return;
 			}
-		} else if ($page_slug !== "") {
-			try {
-				$this->posts = [new Page($page_slug)];
+
+			if ($page !== "") {
+				$this->posts = [new Page($page)];
 				$this->url = Url::Page;
-			} catch (NotFoundException $e) {
-				Header("HTTP/1.1 404 Not Found");
-				$this->url = Url::Error404;
+				return;
 			}
-		} else {
-			$this->posts = Blog::loadPosts($tag_slug);
+
+			$this->tag = $tag;
+			$this->posts = Blog::loadPosts($tag);
+
+			// Handles RSS feeds and sitemaps
+			if ($machine_type !== '') {
+				$this->url = Url::Rss;
+				$this->machine_type = $machine_type;
+				$this->content_type = $content_type;
+				return;
+			}
 
 			// Pagination configuration
 			$this->_page_num = $pagination;
@@ -50,13 +67,56 @@ class Blog {
 			$length = Config::PostsPerPage;
 			$this->_page_num_total = ceil(count($this->posts) / $length);
 
-			// Only return the posts that appear on that page, if
-			// displaying the archive page.
-			if ($is_rss !== true) {
-				$this->posts = array_slice($this->posts, $offset, $length);
-			}
+			$this->posts = array_slice($this->posts, $offset, $length);
 			$this->url = Url::Archive;
+		} catch (NotFoundException $e) {
+			http_response_code(404);
+			$this->url = Url::Error404;
 		}
+	}
+
+	/**
+	 * Converts a URL like `/tag/guide/p/2` or `/post/example-post` into
+	 * a valid blog configuration
+	 */
+	public static function parse_url(string $uri): Blog {
+		$url = substr(urldecode($uri), strlen(Config::Root));
+		$match = [];
+
+		if (preg_match('/^(rss|sitemap)($|\.(xml|json)$)/', $url, $match)) {
+			return new Blog('', '', '', 0, $match[1], $match[2]);
+		}
+
+		if (preg_match('/^post\/(?<slug>[\w\s-]+)\/?/', $url, $match)) {
+			return new Blog($match['slug']);
+		}
+
+		if (preg_match('/^(?<slug>[\w\s-]+)$/', $url, $match)) {
+			$slug = $match['slug'];
+
+			// Handle redirections and exit
+			if (array_key_exists($slug, Config::Redirections)) {
+				http_response_code(301);
+				header('Location: ' . Config::Redirections[$slug]);
+				exit;
+			}
+
+			return new Blog('', $slug);
+		}
+
+		$tag = '';
+		$pagination = 0;
+
+		if (preg_match("/p\/(?<page>\d+)\/?$/", $url, $match)) {
+			$pagination = (int) $match['page'] - 1;
+			if ($pagination < 0) throw new Error("Page cannot be negative");
+		}
+
+		if (preg_match('/^tag\/(?<slug>[\w\s-]+)\/?/', $url, $match)) {
+			$tag = $match['slug'];
+		}
+
+		return new Blog('', '', $tag, $pagination);
 	}
 
 	private function loadPosts($tag) {
@@ -67,7 +127,8 @@ class Blog {
 
 		foreach ($files as $file) {
 			try {
-				$posts[] = new Post(rtrim($file, '.md'), $tag);
+				$slug = rtrim($file, '.md');
+				$posts[$slug] = new Post($slug, $tag);
 			} catch (NotFoundException $e) {
 				// Do nothing, don't add it to the array.
 			}
@@ -89,7 +150,8 @@ class Blog {
 
 		foreach ($files as $file) {
 			try {
-				$pages[] = new Page(rtrim($file, '.md'));
+				$slug = rtrim($file, '.md');
+				$pages[$slug] = new Page($slug);
 			} catch (NotFoundException $e) {
 				// Do nothing, don't add it to the array.
 			}
@@ -156,7 +218,7 @@ class Blog {
 	// PAGINATION FUNCTIONS
 
 	public function has_pagination() {
-		return ($this->url === Url::Archive && ($this->has_page_next() || $this->has_page_prev())) ? true : false;
+		return $this->url === Url::Archive && ($this->has_page_next() || $this->has_page_prev());
 	}
 
 	public function get_page_num() {
@@ -176,10 +238,10 @@ class Blog {
 	}
 
 	public function has_page_prev() {
-		return ($this->_page_num === 0) ? false : true;
+		return $this->_page_num > 0;
 	}
 
 	public function has_page_next() {
-		return ($this->_page_num >= $this->_page_num_total - 1) ? false : true;
+		return $this->_page_num < $this->_page_num_total - 1;
 	}
 }

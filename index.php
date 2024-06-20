@@ -12,57 +12,18 @@ if (Config::using_markdown()) {
 	include("includes/parsedown.php");
 }
 
-/*
- *   BLOG ENGINE STARTING
- */
+$Blog = Blog::parse_url($_SERVER['REQUEST_URI']);
 
-$post_slug = "";
-$page_slug = "";
-$pagination = 0;
-$tag = "";
-$is_rss = not_blank('rss');
-
-function not_blank($var) {
-	return (isset($_GET[$var]) && $_GET[$var] !== "");
-}
-
-// Requesting a blog post
-if (not_blank('post')) {
-	$post_slug = $_GET['post'];
-
-// Requesting a page
-} else if (not_blank('page')) {
-	$page_slug = $_GET['page'];
-
-	// Handle redirections and exit
-	if (array_key_exists($page_slug, Config::Redirections)) {
-		http_response_code(301);
-		header('Location: ' . Config::Redirections[$page_slug]);
+if ($Blog->url === Url::Rss) {
+	if ($Blog->machine_type === 'sitemap') {
+		include("includes/sitemap.php");
+		generate_sitemap($Blog);
 		exit;
 	}
 
-// Show the archive with/without a tag
-} else {
-	if (not_blank('tag')) {
-		$tag = strtolower($_GET['tag']);
-	}
-	if (not_blank('pagination')) {
-		$pagination = $_GET['pagination'] - 1;
-	}
-}
-
-// Initialise the blog
-//
-$Blog = new Blog($post_slug, $page_slug, $pagination, $tag, $is_rss);
-
-if ($is_rss === true) {
-	$rss = $_GET['rss'];
 	include("includes/rss.php");
-	die();
-}
-if (not_blank('sitemap')) {
-	include("includes/sitemap.php");
-	die();
+	print_rss($Blog);
+	exit;
 }
 
 // Now run the theme

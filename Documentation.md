@@ -34,27 +34,20 @@
 Because nginx doesn't use `.htaccess` files to make directory-specific config
 changes, you'll need to set up your server block to do the rewriting for you.
 
-This has a couple of downsides - if you install hyperlight to anywhere other than the root of your server, you'll have to modify all the URLs below to rewrite to your directory. Below is an example where it's installed to `https://example.com/demo`. If you're installing to the root you can replace `/demo` with `/`
+Luckily, this is pretty simple. In your server block, add the snippet below.
+
+If you're installing to a sub-directory, rather than the root, you will need to
+make sure both the `location` and `try_files` refer to the name of the
+sub-directory, like the example below.
+
+If you're installing to the root of your server, you can replace `/demo/` with
+`/`.
 
 ```nginx
 location /demo/ {
-  location ~ /includes/.* { return 404; }
-  location ~ /themes/.* { return 404; }
-  rewrite /sitemap(\.xml)?/?$  /demo/index.php?sitemap=true  last;
-  rewrite /rss/?$              /demo/index.php?rss=xml       last;
-  rewrite /rss.xml$            /demo/index.php?rss=xml       last;
-  rewrite /rss.json$           /demo/index.php?rss=json      last;
-  rewrite /post/([\w\s-]+)$    /demo/index.php?post=$1       last;
-  rewrite /tag/([\w\s-]+)/?$   /demo/index.php?tag=$1        last;
-  rewrite /p/(\d+)/?$          /demo/index.php?pagination=$1 last;
-  rewrite /([\w\s-]+)$         /demo/index.php?page=$1       last;
+  try_files $uri /demo/index.php;
 }
 ```
-
-> [!WARNING]
-> Currently, using nginx doesn't let you paginate tabs, based on these rules.
-> I'll be rewriting the routing soon so it works better on both Apache and
-> Nginx.
 
 ## Configuring Hyperlight
 
