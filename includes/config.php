@@ -69,6 +69,10 @@ abstract class Config {
 
 	/** Returns the full URL, including "http(s)" */
 	static function get_base_url() {
-		return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . Config::Root;
+		$scheme = isset($_SERVER['REQUEST_SCHEME'])
+			? $_SERVER['REQUEST_SCHEME']
+			: (isset($_SERVER['HTTPS']) ? "https" : "http");
+
+		return $scheme . "://" . $_SERVER['HTTP_HOST'] . Config::Root;
 	}
 }
