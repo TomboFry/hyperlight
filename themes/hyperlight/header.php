@@ -2,7 +2,7 @@
 <html lang="en">
 <title><?php echo $Blog->get_title(); ?></title>
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<link rel="alternate" type="application/rss+xml" href="<?php echo Config::get_base_url(); ?>rss.xml" title="RSS Feed">
+<link rel="alternate" type="application/rss+xml" href="<?php echo Blog::get_base_url(); ?>rss.xml" title="RSS Feed">
 <link rel="canonical" href="<?php echo $Blog->get_canonical_url(); ?>">
 <!-- Open Graph Tags -->
 <meta name="twitter:card" content="summary" />
@@ -18,7 +18,7 @@ if ($Blog->url === Url::Post || $Blog->url === Url::Page) {
 		echo "<meta property='og:image' content='{$post->image}' />";
 	}
 } ?>
-<link rel="stylesheet" type="text/css" href="<?php echo Config::get_theme_css_dir(); ?>/style.css">
+<link rel="stylesheet" type="text/css" href="<?php echo Blog::get_theme_css_dir(); ?>/style.css">
 
 <div class="container">
 	<h1 class="title">

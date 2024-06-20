@@ -31,7 +31,7 @@ function array_to_xml(array &$array, string $parent_key = '') {
 function generate_sitemap_array(Blog $Blog) {
 	$urls = [
 		[
-			"loc" => Config::get_base_url(),
+			"loc" => Blog::get_base_url(),
 			"lastmod" => gmdate("c", $Blog->posts[0]->timestamp),
 			"priority" => "1.0"
 		],

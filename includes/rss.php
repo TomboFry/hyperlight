@@ -34,7 +34,7 @@ function rss_image_details ($post) {
 	}
 
 	// Get image size, if image URL is local to the server
-	$url_base = Config::get_base_url();
+	$url_base = Blog::get_base_url();
 	$image_size = 0;
 	$image_local = substr($image_url, 0, strlen($url_base)) === $url_base;
 	if ($image_local === true) {
@@ -89,7 +89,7 @@ function rss_post (Post $post) {
 }
 
 function rss_xml($Blog) {
-	$url_base = Config::get_base_url();
+	$url_base = Blog::get_base_url();
 
 	$title = Config::Title;
 	$lastBuildDate = gmdate(DATE_RFC2822, $Blog->posts[0]->timestamp);
