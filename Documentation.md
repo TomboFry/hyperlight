@@ -44,10 +44,10 @@ location /demo/ {
   rewrite /rss/?$              /demo/index.php?rss=xml       last;
   rewrite /rss.xml$            /demo/index.php?rss=xml       last;
   rewrite /rss.json$           /demo/index.php?rss=json      last;
-  rewrite /post/([\w-]+)$      /demo/index.php?post=$1       last;
+  rewrite /post/([\w\s-]+)$    /demo/index.php?post=$1       last;
   rewrite /tag/([\w\s-]+)/?$   /demo/index.php?tag=$1        last;
   rewrite /p/(\d+)/?$          /demo/index.php?pagination=$1 last;
-  rewrite /([\w-\s]+)$         /demo/index.php?page=$1       last;
+  rewrite /([\w\s-]+)$         /demo/index.php?page=$1       last;
 }
 ```
 
