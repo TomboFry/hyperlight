@@ -40,7 +40,7 @@ class Entry {
 		}
 
 		$metadata_length = 5;
-		if (using_parsedown()) {
+		if (Config::using_markdown()) {
 			$Parsedown = new Parsedown();
 			$this->content = $Parsedown->text(implode("\n", array_slice($lines, $metadata_length)));
 		} else {
@@ -59,6 +59,10 @@ class Entry {
 		$this->edited = filemtime($fullpath);
 	}
 
+	public function get_url() {
+		return Config::get_base_url() . "post/" . $this->slug;
+	}
+
 	public function has_image() {
 		if (isset($this->image) && $this->image != "") {
 			return true;
@@ -71,6 +75,10 @@ class Entry {
 			return true;
 		}
 		return false;
+	}
+
+	public function has_summary() {
+		return !empty($this->summary);
 	}
 
 	public function date_pretty() {
@@ -99,5 +107,9 @@ class Post extends Entry {
 class Page extends Entry {
 	public function __construct($slug) {
 		parent::__construct($slug, "", Url::Page);
+	}
+
+	public function get_url() {
+		return Config::get_base_url() . $this->slug;
 	}
 }

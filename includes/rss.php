@@ -2,7 +2,6 @@
 
 if (!defined("HYPERLIGHT_INIT")) die();
 
-$url_base = get_base_url() . Config::Root;
 $mime_types = [
 	'apng' => 'image/apng',
 	'webp' => 'image/webp',
@@ -21,7 +20,6 @@ $mime_types = [
 ];
 
 function rss_image_details ($post) {
-	global $url_base;
 	global $mime_types;
 
 	if (empty($post->image)) return;
@@ -36,6 +34,7 @@ function rss_image_details ($post) {
 	}
 
 	// Get image size, if image URL is local to the server
+	$url_base = Config::get_base_url();
 	$image_size = 0;
 	$image_local = substr($image_url, 0, strlen($url_base)) === $url_base;
 	if ($image_local === true) {
@@ -64,23 +63,22 @@ function rss_image_details ($post) {
 	echo "/>";
 }
 
-function rss_post ($post) {
-	global $url_base;
+function rss_post (Post $post) {
+	$published_date = gmdate(DATE_RFC2822, $post->timestamp);
 
-	$pubDate = gmdate(DATE_RFC2822, $post->timestamp);
 	echo "\n<item>";
 
 	// Print required information
 	echo "<title>{$post->title}</title>";
-	echo "<pubDate>{$pubDate}</pubDate>";
-	echo "<link>{$url_base}post/{$post->slug}</link>";
-	echo "<guid>{$url_base}post/{$post->slug}</guid>";
+	echo "<pubDate>{$published_date}</pubDate>";
+	echo "<link>{$post->get_url()}</link>";
+	echo "<guid>{$post->get_url()}</guid>";
 
 	// Print article contents
 	echo "<description><![CDATA[{$post->content}]]></description>";
 
 	// Print categories
-	foreach ($post->tags as $key => $category) {
+	foreach ($post->tags as $category) {
 		echo "<category>{$category}</category>";
 	}
 
@@ -91,7 +89,7 @@ function rss_post ($post) {
 }
 
 function rss_xml($Blog) {
-	global $url_base;
+	$url_base = Config::get_base_url();
 
 	$title = Config::Title;
 	$lastBuildDate = gmdate(DATE_RFC2822, $Blog->posts[0]->timestamp);

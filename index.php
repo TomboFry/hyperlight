@@ -8,7 +8,7 @@ include("includes/blog.class.php");
 include("includes/entry.class.php");
 
 // Parsedown is optional, it adds support for markdown blog posts, but also adds 40kb to the installation
-if (using_parsedown()) {
+if (Config::using_markdown()) {
 	include("includes/parsedown.php");
 }
 
