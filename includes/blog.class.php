@@ -113,6 +113,19 @@ class Blog {
 		return $str;
 	}
 
+	public function get_description() {
+		if ($this->url === Url::Archive) {
+			if (empty($this->tag)) {
+				return htmlentities(Config::Description);
+			}
+			return htmlentities("Posts tagged with '{$this->tag}'");
+		}
+		if ($this->posts[0]->has_summary()) {
+			return htmlentities($this->posts[0]->summary);
+		}
+		return htmlentities(Config::Description);
+	}
+
 	public function get_tag_url($tag) {
 		return Config::Root . "tag/" . $tag;
 	}
