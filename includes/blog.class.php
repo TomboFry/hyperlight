@@ -95,14 +95,14 @@ class Blog {
 			}
 		}
 
-		usort($pages, function($a, $b) {
+		usort($pages, function ($a, $b) {
 			return strnatcmp($a->slug, $b->slug);
 		});
 
 		return $pages;
 	}
 
-	// Returns the title, depending on whether you're on a single post or not.
+	/** Returns the title, depending on whether you're on a single post or not. */
 	public function get_title() {
 		$str = "";
 		if ($this->url === Url::Post || $this->url === Url::Page) {
@@ -113,19 +113,53 @@ class Blog {
 		return $str;
 	}
 
-	/*
-		PAGINATION FUNCTIONS
-	*/
+	public function get_tag_url($tag) {
+		return Config::Root . "tag/" . $tag;
+	}
+
+	/** Returns the current page, including whether a tag was included */
+	function get_canonical_url(bool $include_page = true) {
+		$url = Config::get_base_url();
+
+		if ($this->url === Url::Page) {
+			return $url . $this->posts[0]->slug;
+		}
+
+		if ($this->url === Url::Post) {
+			return $url . "post/" . $this->posts[0]->slug;
+		}
+
+		if ($this->tag !== "") {
+			$url .= "tag/{$this->tag}/";
+		}
+
+		if ($include_page === true && $this->_page_num > 0) {
+			$url .= "p/" . ($this->_page_num + 1);
+		}
+
+		return $url;
+	}
+
+	// PAGINATION FUNCTIONS
+
+	public function has_pagination() {
+		return ($this->url === Url::Archive && ($this->has_page_next() || $this->has_page_prev())) ? true : false;
+	}
+
 	public function get_page_num() {
 		return $this->_page_num + 1;
 	}
 
+	public function get_page_total() {
+		return $this->_page_num_total;
+	}
+
 	public function get_page_prev() {
-		return get_page_url() . "p/" . $this->_page_num;
+		return $this->get_canonical_url(false) . "p/" . $this->_page_num;
 	}
 
 	public function get_page_next() {
-		return get_page_url() . "p/" . ($this->_page_num + 2);
+		return $this->get_canonical_url(false) . "p/" . ($this->_page_num + 2);
 	}
 
 	public function has_page_prev() {
@@ -134,13 +168,5 @@ class Blog {
 
 	public function has_page_next() {
 		return ($this->_page_num >= $this->_page_num_total - 1) ? false : true;
-	}
-
-	public function has_pagination() {
-		return ($this->url === Url::Archive && ($this->has_page_next() || $this->has_page_prev())) ? true : false;
-	}
-
-	public function get_page_total() {
-		return $this->_page_num_total;
 	}
 }

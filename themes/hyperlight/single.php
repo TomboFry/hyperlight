@@ -1,7 +1,7 @@
 <?php if (!defined("HYPERLIGHT_INIT")) die();
 
 function post($entry, $full) {
-	$root = Config::Root;
+	global $Blog;
 
 	echo "<article class='entry" . ($full === true ? " single" : "") . "'>";
 
@@ -12,7 +12,7 @@ function post($entry, $full) {
 		echo "<h2 class='entry-title'>{$entry->title}</h2>";
 		echo "<div class='content'>{$entry->content}</div>";
 	} else {
-		echo "<h2 class='entry-title'><a href='{$root}post/{$entry->slug}'>{$entry->title}</a></h2>";
+		echo "<h2 class='entry-title'><a href='{$entry->get_url()}'>{$entry->title}</a></h2>";
 		echo "<p class='summary'>{$entry->summary}</p>";
 	}
 
@@ -22,7 +22,7 @@ function post($entry, $full) {
 	if ($entry->has_tags() && $full === true) {
 		echo "<div class='tags'>Tags: ";
 		foreach ($entry->tags as $tag) {
-			echo "<a class='tag' href='" . get_tag_link($tag) . "'>{$tag}</a>";
+			echo "<a class='tag' href='" . $Blog->get_tag_url($tag) . "'>{$tag}</a>";
 		}
 		echo "</div>";
 	}
