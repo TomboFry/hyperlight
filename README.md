@@ -18,8 +18,7 @@ and easily extensible.
 ## Requirements
 
 * Apache `mod_rewrite` engine
-* PHP (tested on 8.3, but should work all the way back to 5.5 if you're a
-  maniac!)
+* PHP (tested on 8.3, but should work from 8.1 onwards)
 
 ## Demo
 

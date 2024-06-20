@@ -1,24 +1,14 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
+	Options FollowSymLinks
 
-	# You may or may not need to uncomment this option, if you are getting a
-	# forbidden error when you load the page:
-	# Options FollowSymLinks
+	# Protect application and system files from being viewed
+	RewriteRule ^(includes|posts|pages) - [F,L]
 
-	RewriteRule ^sitemap\/?$ index.php?sitemap=true [L]
-	RewriteRule ^sitemap\.xml$ index.php?sitemap=true [L]
+	# Allow any files or directories that exist to be displayed directly
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
 
-	# RSS feed
-	RewriteRule ^rss\/?$ index.php?rss=xml [L]
-	RewriteRule ^rss\/([a-z]+)$ index.php?rss=$1 [L]
-	RewriteRule ^rss\.xml$ index.php?rss=xml [L]
-	RewriteRule ^rss\.json$ index.php?rss=json [L]
-
-	RewriteRule ^post\/([A-Za-z0-9-_\s]+)\/?$ index.php?post=$1 [L]
-	RewriteRule ^([A-Za-z0-9-_\s]+)\/?$ index.php?page=$1 [L]
-	RewriteRule ^tag\/([A-Za-z0-9-_\s]+)\/?.*$ index.php?tag=$1
-	RewriteRule ^(.*\/)?p\/([0-9]+)\/?$ index.php?pagination=$2&%{QUERY_STRING} [L]
-
-	RedirectMatch 404 ^/includes/.*$
-	RedirectMatch 404 ^/themes/.*$
+	# Rewrite all other URLs to index.php/
+	RewriteRule .* index.php/$0 [PT,L]
 </IfModule>

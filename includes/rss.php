@@ -115,14 +115,15 @@ function rss_xml($Blog) {
 	echo "</channel></rss>";
 }
 
-switch ($rss) {
-	case "json":
-		header("Content-Type: application/json;");
-		echo json_encode($Blog->posts);
-		break;
-	case "xml":
-	default:
-		rss_xml($Blog);
-		break;
+function print_rss(Blog $Blog) {
+	switch ($Blog->content_type) {
+		case ".json":
+			header("Content-Type: application/json;");
+			echo json_encode($Blog->posts);
+			break;
+		case ".xml":
+		default:
+			rss_xml($Blog);
+			break;
+	}
 }
-?>

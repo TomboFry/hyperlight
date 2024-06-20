@@ -21,14 +21,17 @@ if ($Blog->url === Url::Post || $Blog->url === Url::Page) {
 <link rel="stylesheet" type="text/css" href="<?php echo Config::get_theme_css_dir(); ?>/style.css">
 
 <div class="container">
-	<h1 class="title"><a href="<?php echo Config::Root; ?>"><?php echo Config::Title; ?></a></h1>
+	<h1 class="title">
+		<a href="<?php echo Config::Root; ?>">
+			<?php echo Config::Title; ?>
+		</a>
+	</h1>
 	<nav class="nav">
 		<ul>
 			<li><a href="<?php echo Config::Root; ?>">Home</a></li>
 			<?php
-				$root = Config::Root;
-				foreach ($Blog->pages as $Page) {
-					echo "<li><a href='{$root}{$Page->slug}'>{$Page->title}</a></li>";
+				foreach ($Blog->pages as $page) {
+					echo "<li><a href='{$page->get_url()}'>{$page->title}</a></li>";
 				}
 			?>
 		</ul>

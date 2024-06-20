@@ -51,7 +51,7 @@ abstract class Config {
 		"tombofry" => "https://www.tombofry.co.uk/",
 	];
 
-	// That's it! You can stop editing now :)
+	/****** That's it! You can stop editing now :) *******/
 
 	static function using_markdown() {
 		return file_exists("includes/parsedown.php") && Config::UseMarkdown;
