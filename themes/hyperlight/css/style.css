@@ -1,0 +1,332 @@
+:root {
+	--primary: #32B2EE;
+	--primary-hover: #0087D5;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+	box-sizing: border-box;
+}
+
+code,
+pre {
+	font-family: 'JetBrains Mono', Cascadia, 'Fira Code', monospace;
+}
+
+code,
+pre {
+	color: #f8f8f2;
+	background: none;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+	font-size: 0.85em;
+	tab-size: 4;
+	hyphens: none;
+	background: #272822;
+}
+
+/* Code blocks */
+pre {
+	padding: 32px;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+/* Inline code */
+:not(pre)>code {
+	padding: .1em .2em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	padding-top: 64px;
+	font-size: 1.5em;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	color: #333;
+	overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 800;
+	letter-spacing: -0.03em;
+}
+
+.title a {
+	letter-spacing: -0.03em;
+	line-height: 1;
+	margin-bottom: 32px;
+	display: inline-block;
+	text-decoration: none;
+	color: #222;
+	font-weight: 800;
+}
+
+.container {
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	flex: 1;
+}
+
+a {
+	color: var(--primary);
+	text-decoration: none;
+}
+
+a:hover {
+	color: var(--primary-hover);
+	text-decoration: underline;
+}
+
+.entry {
+	display: block;
+	margin-top: 42px;
+	padding-bottom: 48px;
+}
+
+.entry:first-of-type {
+	margin-top: 32px;
+}
+
+.entry:last-of-type {
+	border-bottom: 0;
+}
+
+.entry .metadata {
+	display: block;
+	font-size: 0.6em;
+	line-height: 1.618;
+}
+
+.entry img,
+pre {
+	width: 100%;
+	width: calc(100% + 64px);
+	margin-left: -32px;
+}
+
+.content>*,
+img.featured {
+	margin-bottom: 32px;
+	display: block;
+}
+
+.content p,
+.content li,
+.summary {
+	line-height: 1.618;
+}
+
+.entry-title {
+	font-size: 2em;
+}
+
+.entry-title,
+.summary {
+	margin-bottom: 8px;
+}
+
+.single .entry-title {
+	margin-bottom: 32px;
+}
+
+.content h2 {
+	font-size: 1.6em;
+}
+
+.content h3 {
+	font-size: 1.5em;
+}
+
+.content h4 {
+	font-size: 1.4em;
+}
+
+.content ul,
+.content ol {
+	margin-left: 32px;
+}
+
+.content blockquote {
+	font-style: italic;
+	color: #555;
+	padding-left: 32px;
+	border-left: 3px solid var(--primary);
+}
+
+.content hr {
+	border: 0;
+	border-top: 1px solid #999;
+}
+
+.content table {
+	width: 100%;
+	width: calc(100% + 64px);
+	margin-left: -32px;
+	margin-bottom: 32px;
+	border-collapse: collapse;
+	border: 2px solid #333;
+}
+
+.content thead {
+	border-bottom: 2px solid #333;
+}
+
+.content td,
+.content th {
+	padding: 10px 14px;
+	text-align: left;
+}
+
+.tags .tag {
+	display: inline-block;
+	padding: .3rem .4rem;
+	margin-right: .2rem;
+	border-radius: .3rem;
+	color: #fff;
+	background-color: var(--primary);
+}
+
+.tags .tag:hover {
+	text-decoration: none;
+	background-color: var(--primary-hover);
+}
+
+.nav {
+	display: block;
+	margin-left: -12px;
+	margin-bottom: 32px;
+}
+
+.nav ul,
+.pagination ul {
+	list-style-type: none;
+}
+
+.nav li,
+.pagination li {
+	display: inline-block;
+	line-height: 2;
+}
+
+.nav li a {
+	padding: 8px 12px;
+}
+
+.pagination {
+	margin-bottom: 64px;
+}
+
+.pagination ul:after {
+	clear: both;
+	display: block;
+	content: '';
+	float: none;
+}
+
+.pagination li a {
+	padding: 8px 16px;
+	border: 2px solid var(--primary);
+	color: var(--primary);
+	border-radius: 8px;
+}
+
+.pagination li a:hover {
+	border: 2px solid var(--primary);
+	background-color: var(--primary);
+	color: #fff;
+}
+
+.pagination .pag-newer {
+	float: left;
+}
+
+.pagination .pag-older {
+	float: right;
+}
+
+.footer {
+	padding: 64px;
+	color: #FFF;
+	background-color: var(--primary);
+	font-weight: 800;
+}
+
+@media (max-width: 976px) {
+	body {
+		padding-top: 0;
+	}
+
+	.container {
+		padding: 32px;
+	}
+
+	.pagination {
+		margin-bottom: 0;
+	}
+
+	.footer {
+		padding: 0;
+	}
+
+	.title {
+		font-size: 1.4em;
+	}
+
+	.entry h2 {
+		font-size: 1.9em;
+	}
+
+	.entry:last-of-type {
+		padding-bottom: 16px;
+	}
+}
+
+@media (max-width: 480px) {
+
+	.nav,
+	.entry table {
+		font-size: 0.8em;
+	}
+
+	.entry h2 {
+		font-size: 1.5em;
+	}
+
+	.entry .content h2 {
+		font-size: 1.4em;
+	}
+
+	.entry .content h3 {
+		font-size: 1.3em;
+	}
+
+	.entry .content h4 {
+		font-size: 1.2em;
+	}
+
+	code,
+	pre {
+		font-size: 0.7em;
+	}
+}
