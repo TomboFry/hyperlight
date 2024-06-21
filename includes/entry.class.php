@@ -106,17 +106,11 @@ class Entry {
 	}
 
 	public function has_image() {
-		if (isset($this->image) && $this->image != "") {
-			return true;
-		}
-		return false;
+		return !empty($this->image);
 	}
 
 	public function has_tags() {
-		if (isset($this->tags) && count($this->tags) > 0) {
-			return true;
-		}
-		return false;
+		return count($this->tags) > 0;
 	}
 
 	public function has_summary() {
