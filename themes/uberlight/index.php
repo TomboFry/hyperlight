@@ -6,6 +6,7 @@ if (!defined("HYPERLIGHT_INIT")) die();
 $root = Config::Root;
 $title = Config::Title;
 $footer = Config::Footer;
+$description = Config::Description;
 
 // Then set up the HTML document
 ?>
@@ -40,14 +41,15 @@ if ($Blog->url === Url::Error404) {
 
 		// Include a link to the single post if we're viewing the archive
 		if ($Blog->url === Url::Archive) {
-			echo "<h2><a href='" . $entry->get_url() . "'>{$entry->title}</a></h2>";
-			echo "<p>" . $entry->summary . "</p>";
+			echo "<h2><a href='{$entry->get_url()}'>{$entry->title}</a></h2>";
+			echo "<p>{$entry->summary}</p>";
 		} else {
 			// Otherwise just include the post's featured image, title and content.
 			if ($entry->has_image()) {
 				echo "<img src='{$entry->image}' />";
 			}
 			echo "<h2>{$entry->title}</h2>";
+			echo "<time datetime='{$post->date_datetime()}'>Published at {$post->date_pretty()}</time>";
 			echo $entry->content;
 			if ($entry->has_tags()) {
 				echo "<div class='tags'>Tags: ";
@@ -76,5 +78,5 @@ if ($Blog->url === Url::Error404) {
 }
 
 // Display the footer text at the bottom of each page.
-echo "<footer style='margin-top:32px;'>{$footer}</footer>";
+echo "<footer style='margin-top:32px;'>{$footer} - {$description}</footer>";
 echo "</html>";
