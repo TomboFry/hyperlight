@@ -1,31 +1,19 @@
 <?php
 if (!defined("HYPERLIGHT_INIT")) die();
 
-function array_to_xml(array &$array, string $parent_key = '') {
-	$output = [];
-	if (empty($parent_key)) {
-		array_push($output, '<?xml version="1.0" ?>');
-	}
-
+function array_to_xml(array $array, SimpleXMLElement &$xml, string $parent_key = '') {
 	foreach ($array as $key => $value) {
-		$new_key = $key;
-		if (is_int($new_key)) {
-			$new_key = $parent_key;
-		}
-
 		if (is_array($value)) {
-			$is_list = array_is_list($value);
-
-			if (!$is_list) array_push($output, "<{$new_key}>");
-			array_push($output, array_to_xml($value, $new_key));
-			if (!$is_list) array_push($output, "</{$new_key}>");
-
+			$node = $xml;
+			if (is_numeric($key)) {
+				$node = $xml->addChild($parent_key);
+			}
+			array_to_xml($value, $node, $key);
 			continue;
 		}
 
-		array_push($output, "<{$new_key}>{$value}</{$new_key}>");
+		$xml->addChild($key, htmlspecialchars($value));
 	}
-	return implode($output);
 }
 
 function generate_sitemap_array(Blog $Blog) {
@@ -66,7 +54,9 @@ function generate_sitemap(Blog $Blog) {
 		case '.xml':
 		default:
 			header('Content-Type: text/xml');
-			echo array_to_xml($urlset);
+			$xml = new SimpleXMLElement('<?xml version="1.0"?><urlset/>');
+			array_to_xml($urlset, $xml);
+			echo $xml->asXML();
 			break;
 	}
 }
