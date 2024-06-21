@@ -1,0 +1,17 @@
+You Can Also Write in Plain Text
+For those moments when you just want to write a quick note without formatting.
+
+guide, plain-text, summary
+-----
+
+This post is written using plain text. A single new-line does not constitute a
+new paragraph, because you might want to write paragraphs with wrapped text,
+like this one (checking the text file will make more sense!). However, using TWO
+new-lines in a row will start a new paragraph.
+
+Tada!
+
+However, please keep in mind that you cannot using markdown headers, or any
+other markup, including HTML! For that you will either need to enable markdown
+and rename the file to `.md` - or rename the file to `.html` for pure HTML -
+instead of `.txt`.

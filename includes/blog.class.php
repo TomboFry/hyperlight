@@ -1,8 +1,6 @@
 <?php
 if (!defined("HYPERLIGHT_INIT")) die();
 
-class NotFoundException extends Exception {}
-
 enum Url {
 	case Archive;
 	case Post;
@@ -12,10 +10,10 @@ enum Url {
 }
 
 class Blog {
-	public array $posts;
-	public array $pages;
+	public array $posts = [];
+	public array $pages = [];
 	public Url $url;
-	public string $tag;
+	public string $tag = '';
 
 	// RSS / Sitemap
 	public string $machine_type;
@@ -32,7 +30,7 @@ class Blog {
 		string $machine_type = '',
 		string $content_type = ''
 	) {
-		$this->pages = Blog::loadPages();
+		$this->pages = Blog::load_pages();
 
 		$this->_page_num = 0;
 		$this->_page_num_total = 1;
@@ -51,7 +49,7 @@ class Blog {
 			}
 
 			$this->tag = $tag;
-			$this->posts = Blog::loadPosts($tag);
+			$this->posts = Blog::load_posts($tag);
 
 			// Handles RSS feeds and sitemaps
 			if ($machine_type !== '') {
@@ -119,7 +117,7 @@ class Blog {
 		return new Blog('', '', $tag, $pagination);
 	}
 
-	private function loadPosts($tag) {
+	private function load_posts($tag) {
 		$files = scandir(Config::PostsDirectory);
 		$files = array_splice($files, 2);
 
@@ -127,22 +125,20 @@ class Blog {
 
 		foreach ($files as $file) {
 			try {
-				$slug = rtrim($file, '.md');
+				$slug = pathinfo($file, PATHINFO_FILENAME);
 				$posts[$slug] = new Post($slug, $tag);
-			} catch (NotFoundException $e) {
+			} catch (NotInFilterException $e) {
 				// Do nothing, don't add it to the array.
 			}
 		}
 
 		// Sort the posts before manipulating and displaying them
-		usort($posts, function ($a, $b) {
-			return ($a->timestamp > $b->timestamp) ? -1 : 1;
-		});
+		usort($posts, fn (Entry $a, Entry $b) => -strnatcmp($a->timestamp, $b->timestamp));
 
 		return $posts;
 	}
 
-	private function loadPages() {
+	private static function load_pages() {
 		$files = scandir(Config::PagesDirectory);
 		$files = array_splice($files, 2);
 
@@ -150,16 +146,14 @@ class Blog {
 
 		foreach ($files as $file) {
 			try {
-				$slug = rtrim($file, '.md');
+				$slug = pathinfo($file, PATHINFO_FILENAME);
 				$pages[$slug] = new Page($slug);
 			} catch (NotFoundException $e) {
 				// Do nothing, don't add it to the array.
 			}
 		}
 
-		usort($pages, function ($a, $b) {
-			return strnatcmp($a->slug, $b->slug);
-		});
+		usort($pages, fn ($a, $b) => strnatcmp($a->slug, $b->slug));
 
 		return $pages;
 	}
@@ -176,16 +170,22 @@ class Blog {
 	}
 
 	public function get_description() {
-		if ($this->url === Url::Archive) {
-			if (empty($this->tag)) {
+		switch ($this->url) {
+			case Url::Archive:
+				if (empty($this->tag)) {
+					return htmlentities(Config::Description);
+				}
+				return htmlentities("Posts tagged with '{$this->tag}'");
+
+			case Url::Page:
+			case Url::Post:
+				if ($this->posts[0]->has_summary()) {
+					return htmlentities($this->posts[0]->summary);
+				}
+
+			default:
 				return htmlentities(Config::Description);
-			}
-			return htmlentities("Posts tagged with '{$this->tag}'");
 		}
-		if ($this->posts[0]->has_summary()) {
-			return htmlentities($this->posts[0]->summary);
-		}
-		return htmlentities(Config::Description);
 	}
 
 	public function get_tag_url($tag) {
