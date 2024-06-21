@@ -1,6 +1,6 @@
 <?php
 
-define("HYPERLIGHT_INIT", "true");
+define("HYPERLIGHT_INIT", "v2.0.0");
 
 // Make sure these files exist before making this blog public facing.
 require_once "includes/config.php";

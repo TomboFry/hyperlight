@@ -10,7 +10,6 @@
   - [Writing posts/pages](#writing-postspages)
   - [Writing custom themes](#writing-custom-themes)
     - [Config variables](#config-variables)
-    - [Main functions](#main-functions)
     - [Blog functions](#blog-functions)
     - [Blog properties](#blog-properties)
     - [Posts](#posts)
@@ -47,7 +46,12 @@ If you're installing to the root of your server, you can replace `/demo/` with
 location /demo/ {
   try_files $uri /demo/index.php;
 }
+location ~ /demo/(includes|posts|pages)(\/.*)? {
+  return 404;
+}
 ```
+
+Also, if you choose to move your posts or pages directories in the Config file, you can change the nginx config above to return a 404 correctly.
 
 ## Configuring Hyperlight
 
@@ -63,7 +67,7 @@ By default, posts and pages are in the `posts/` and `pages/` directory by defaul
 
 To write a post or a page:
 
-* Create a markdown (`.md`) file inside the folder.
+* Create a markdown (`.md`), `txt`, or `html` file inside the folder.
 * The filename is the URL used by hyperlight (eg. `my-post.md` would be
   `https://example.com/post/my-post`)
 * If your filename starts with an ISO date (eg. `YYYY-MM-DD`), that will set the
@@ -122,67 +126,69 @@ the options relevant to theming:
   based off.
 * `Config::Title`  
   Your blog's title
+* `Config::Description`  
+  Your blog's description
 * `Config::Footer`  
   The text to be displayed at the bottom of your blog. Of course, this can be
   ignored if you want your theme to display more intricate contents on the
   footer, but is good to use a default theme straight out of the box.
 
-### Main functions
-
-> [!WARNING]
-> Be careful, as some of these print directly, and some return strings. I don't
-> like the inconsistency at the moment, so at some point in v2 these will
-> change.
-
-* `get_home_link()`  
-  **Prints** the URL to your homepage.
-* `get_post_link($post_slug)`  
-  Returns a link to a specific blog post.
-* `get_tag_link($tag_slug)`  
-  Returns a link to the archive of a specific tag.
-* `get_theme_css_dir()`  
-  **Prints** out the directory containing CSS files - this assumes your theme
-  has a directory inside called `css`.
-* `get_theme_js_dir()`  
-  **Prints** out the directory containing JS files - this assumes your theme has
-  a directory inside called `js`.
-
 ### Blog functions
 
-* `$Blog->get_title()`  
-  This returns the full title of the page you're visiting, whether it's the
-  index or an individual page/post.
-* `$Blog->has_pagination()`  
-  returns `false` on individual pages/posts, otherwise it may return `true` if
-  you have more posts than are currently displayed on one page.
-* `$Blog->get_page_total()`  
-  returns the number of pages available.
-* `$Blog->has_page_next()` and `$Blog->has_page_prev()`  
-  returns `true`/`false` if there are more pages.
-* `$Blog->get_page_next()` and `$Blog->get_page_prev()`  
-  return the URL for the next and previous pages.
-* `$Blog->get_page_num()`  
-  returns the currently viewed page.
+* `$Blog->get_title()`
+  * This returns the full title of the page you're visiting, whether it's the
+    index or an individual page/post.
+* `$Blog->get_description()` - depending on the page, it'll return either:
+  * the description set in your config
+  * the summary of the post/page being viewed
+  * or if you're viewing a tag archive, "Posts tagged with 'tag-name'".
+* `$Blog->get_canonical_url()`
+  * returns the true URL for the page being viewed
+  * for example, `/tag/news/p/1` is identical to `/tag/news` in terms of
+    content, so we can use the latter.)
+* `$Blog->get_tag_link($tag_slug)`
+  * Returns a link to the archive of a specific tag.
+* `$Blog->has_pagination()`
+  * returns `false` on individual pages/posts, otherwise it may return `true` if
+    you have more posts than are currently displayed on one page.
+* `$Blog->get_page_num()`
+  * returns the currently viewed page.
+* `$Blog->get_page_total()`
+  * returns the number of pages available.
+* `$Blog->has_page_next()` and `$Blog->has_page_prev()`
+  * returns `true`/`false` if there are more pages.
+* `$Blog->get_page_next()` and `$Blog->get_page_prev()`
+  * return the URL for the next and previous pages.
+* `Blog::get_base_url()` (static function)
+  * Returns an absolute URL to the root of your blog
+* `Blog::get_theme_css_dir()` (static function)
+  * Returns the directory containing CSS files - this assumes your theme has a
+    directory inside called `css`.
+* `Blog::get_theme_js_dir()` (static function)
+  * Returns the directory containing JS files - this assumes your theme has a
+    directory inside called `js`.
+
 
 ### Blog properties
 
-* `$Blog->url`  
-  Determines what page you're looking at. It can be checked by comparing to:
-  * `Url::Archive` The main post archive/index.
-  * `Url::Post` Viewing a single post
-  * `Url::Page` Viewing a single page
-  * `Url::Error404` The post or page you're trying to view doesn't exist.
-* `$Blog->posts`  
-  An array of [posts](#posts).
+* `$Blog->url`
+  * Determines what page you're looking at. It can be checked by comparing to:
+    * `Url::Archive` The main post archive/index.
+    * `Url::Post` Viewing a single post
+    * `Url::Page` Viewing a single page
+    * `Url::Error404` The post or page you're trying to view doesn't exist.
+* `$Blog->posts`
+  * An array of [posts](#posts).
   * If you're viewing a single post, this array will contain only that post.
   * If you're viewing a single page, this array will contain only that page.
-* `$Blog->pages`  
-  An array of [pages](#pages). Always contains the full list of pages,
-  regardless of the URL.
+* `$Blog->pages`
+  * An array of [pages](#pages). Always contains the full list of pages,
+    regardless of the URL.
 
 ### Posts
 
-There are several properties posts have which can be used, but more useful are the functions, for transforming those properties as necessary:
+There are several properties posts have which can be used, but more useful are
+the functions, for transforming those properties as necessary:
 
 * `$post->title`
 * `$post->summary` A short description of the post/page
@@ -190,20 +196,24 @@ There are several properties posts have which can be used, but more useful are t
 * `$post->image` A URL to the main, featured image
 * `$post->tags` An array of tags
 * `$post->slug` The filename/portion of the URL referring to this post/page
-
-* `$post->has_image()`  
-  Returns `true`/`false` depending on whether a URL was provided in the
-  markdown.
-* `$post->has_tags()`  
-  Returns `true`/`false` depending on whether this post/page has any tags.
-* `$post->date_pretty()`  
-  Returns a nice-looking published date to be displayed on the page.
-* `$post->date_datetime()`  
-  Returns an ISO8601-formatted timestamp for the published date.
-* `$post->edited_pretty()`  
-  Returns when the post was last edited, formatted nicely.
-* `$post->edited_datetime()`  
-  Returns an ISO8601-formatted timestamp for the post's edited date.
+---
+* `$post->get_url()`
+  * returns an absolute URL to the post.
+* `$post->has_image()`
+  * Returns `true`/`false` depending on whether a featured image URL was
+    provided in the header of the post.
+* `$post->has_tags()`
+  * Returns `true`/`false` depending on whether this post/page has any tags.
+* `$post->has_summary()`
+  * Returns `true`/`false` depending on whether this post/page has a summary.
+* `$post->date_pretty()`
+  * Returns a nice-looking published date to be displayed on the page.
+* `$post->date_datetime()`
+  * Returns an ISO8601-formatted timestamp for the published date.
+* `$post->edited_pretty()`
+  * Returns when the post was last edited, formatted nicely.
+* `$post->edited_datetime()`
+  * Returns an ISO8601-formatted timestamp for the post's edited date.
 
 ### Pages
 

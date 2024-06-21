@@ -5,8 +5,8 @@ and easily extensible.
 
 ## Features
 
-* **17.4 kB** installed size (disclaimer: with the smallest packaged theme
-  (uberlight) and no markdown support. Full download size: 84 kB)
+* **23 kB** installed size (disclaimer: with the smallest packaged theme
+  (uberlight) and no markdown support. Full download size: 74 kB)
 * Markdown parsing, thanks to [Parsedown](https://github.com/erusev/parsedown)
   (optional, adds 37kb to installation)
 * Theme support
@@ -17,13 +17,13 @@ and easily extensible.
 
 ## Requirements
 
-* Apache `mod_rewrite` engine
-* PHP (tested on 8.3, but should work from 8.1 onwards)
+* Apache with the `mod_rewrite` engine, or Nginx
+* PHP (developed & tested on 8.3, but should work from 8.1 onwards)
 
 ## Demo
 
 A demo of the initial installation state can be found here:
-<https://tombofry.co.uk/hyperlight/>
+<https://www.tombo.sh/releases/hyperlight-demo/>
 
 ## Documentation/Manual
 
