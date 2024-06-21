@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <link rel="alternate" type="application/rss+xml" href="<?php echo Blog::get_base_url(); ?>rss.xml" title="RSS Feed">
 <link rel="canonical" href="<?php echo $Blog->get_canonical_url(); ?>">
+<meta name="generator" content="Hyperlight <?php echo HYPERLIGHT_INIT ?>" />
 <!-- Open Graph Tags -->
 <meta name="twitter:card" content="summary" />
 <meta property="og:title" content="<?php echo $Blog->get_title(); ?>" />

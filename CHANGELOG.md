@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.0.0 - 2024-06-21
+
+⚠ Please read the [documentation](./Documentation.md) if you're using a custom
+theme and wish to update to version 2 - several functions have changed places.
+
+### Added
+
+* Support for plain-text and HTML blog posts and pages.
+* `Config::Description` option
+* `$Blog->get_description()` and `$Blog->get_canonical_url()` functions
+
+### Changed
+
+* URL parsing method - no need for a complicated `.htaccess` file, and is more
+  compatible with nginx.
+* Refactored nearly all of the backend. As such, **all existing themes on v1 are
+  not compatible with v2** (hence the major version bump). All global
+  functions should now belong in `$Blog`.
+* Renamed `Config::UseParsedown` to `Config::UseMarkdown` to make the option's
+  change more obvious.
+
+### Removed
+
+* Removed prism.js from default theme
+
 ## 1.5.0 - 2024-06-20
 
 It's been almost 7 years since the last update, but I have *actually* been using

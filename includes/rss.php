@@ -90,6 +90,7 @@ function rss_post (Post $post) {
 function rss_xml($Blog) {
 	$url_base = Blog::get_base_url();
 
+	$version = HYPERLIGHT_INIT;
 	$title = Config::Title;
 	$lastBuildDate = gmdate(DATE_RFC2822, $Blog->posts[0]->timestamp);
 
@@ -104,7 +105,7 @@ function rss_xml($Blog) {
 	<title>{$title}</title>
 	<atom:link href=\"{$url_base}rss\" rel=\"self\" type=\"application/rss+xml\" />
 	<description>{$title}</description>
-	<generator>Hyperlight CMS</generator>
+	<generator>Hyperlight CMS {$version}</generator>
 	<link>{$url_base}</link>
 	<lastBuildDate>{$lastBuildDate}</lastBuildDate>";
 
