@@ -17,11 +17,11 @@ class Entry {
 	public function __construct(string $slug, Url $url, string $tag_filter) {
 		$fullpath = ($url === Url::Post) ? Config::PostsDirectory : Config::PagesDirectory;
 
-		list(
+		[
 			'lines' => $lines,
 			'ext' => $ext,
 			'file_name' => $file_name,
-		) = Entry::get_contents($fullpath, $slug);
+		] = Entry::get_contents($fullpath, $slug);
 
 		$this->slug = $slug;
 		$this->title = trim($lines[0]);
@@ -59,10 +59,11 @@ class Entry {
 		$found_file = false;
 
 		foreach ($files as $file) {
-			if (!str_starts_with($file, $slug)) continue;
+			$info = pathinfo($file);
+			if ($info['filename'] !== $slug) continue;
 
 			$found_file = true;
-			$ext = pathinfo($file, PATHINFO_EXTENSION);
+			$ext = $info['extension'];
 			break;
 		}
 
@@ -71,10 +72,10 @@ class Entry {
 		}
 
 		$file_name = "{$dir}{$slug}.{$ext}";
-		$file_contents = file_get_contents($file_name);
+		$file_contents = explode("\n", file_get_contents($file_name));
 
 		return [
-			"lines" => explode("\n", $file_contents),
+			"lines" => $file_contents,
 			"file_name" => $file_name,
 			"ext" => $ext,
 		];

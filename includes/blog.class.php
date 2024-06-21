@@ -73,23 +73,33 @@ class Blog {
 		}
 	}
 
+	private static function generate_404(): Blog {
+		$blog = new Blog();
+		$blog->url = Url::Error404;
+		return $blog;
+	}
+
 	/**
 	 * Converts a URL like `/tag/guide/p/2` or `/post/example-post` into
 	 * a valid blog configuration
 	 */
 	public static function parse_url(string $uri): Blog {
-		$url = substr(urldecode($uri), strlen(Config::Root));
+		$url = strtok(substr(urldecode($uri), strlen(Config::Root)), '?');
 		$match = [];
 
+		// Handle RSS/sitemap first
 		if (preg_match('/^(rss|sitemap)($|\.(xml|json)$)/', $url, $match)) {
 			return new Blog('', '', '', 0, $match[1], $match[2]);
 		}
 
-		if (preg_match('/^post\/(?<slug>[\w\s-]+)\/?/', $url, $match)) {
+		// Handle single posts
+		if (preg_match('/^post\/(?<slug>[\w\s-]+)$/', $url, $match)) {
 			return new Blog($match['slug']);
 		}
 
-		if (preg_match('/^(?<slug>[\w\s-]+)$/', $url, $match)) {
+		// Handle pages
+		if (preg_match('/^(?<slug>[\w\s-]+)\/?$/', $url, $match)) {
+			if ($match['noise']) return Blog::generate_404();
 			$slug = $match['slug'];
 
 			// Handle redirections and exit
@@ -102,19 +112,23 @@ class Blog {
 			return new Blog('', $slug);
 		}
 
-		$tag = '';
 		$pagination = 0;
-
-		if (preg_match("/p\/(?<page>\d+)\/?$/", $url, $match)) {
+		if (preg_match('/p\/(?<page>\d+)$/', $url, $match)) {
 			$pagination = (int) $match['page'] - 1;
-			if ($pagination < 0) throw new Error("Page cannot be negative");
+			if ($pagination < 0) return Blog::generate_404();
 		}
 
+		// Handle tag archives
 		if (preg_match('/^tag\/(?<slug>[\w\s-]+)\/?/', $url, $match)) {
-			$tag = $match['slug'];
+			return new Blog('', '', $match['slug'], $pagination);
 		}
 
-		return new Blog('', '', $tag, $pagination);
+		// Finally, handle basic archives
+		if (preg_match('/^(p\/\d+)?$/', $url, $match)) {
+			return new Blog('', '', '', $pagination);
+		}
+
+		return Blog::generate_404();
 	}
 
 	private function load_posts($tag) {
