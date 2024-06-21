@@ -30,9 +30,6 @@ abstract class Config {
 	/** How many posts to display per page before requiring pagination */
 	const PostsPerPage = 10;
 
-	/** The width images get resized to when uploaded */
-	const ImageWidth = 1024;
-
 	/** Determines whether or not to use Parsedown, which converts markdown documents into HTML. */
 	const UseMarkdown = true;
 
