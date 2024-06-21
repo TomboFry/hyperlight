@@ -27,8 +27,7 @@ function rss_image_details ($post) {
 
 	// Get image MIME-type
 	$image_mime = "";
-	$image_segments = explode('.', $image_url);
-	$ext = strtolower(array_pop($image_segments));
+	$ext = strtolower(pathinfo($image_url, PATHINFO_EXTENSION));
 	if (array_key_exists($ext, $mime_types)) {
 		$image_mime = $mime_types[$ext];
 	}
@@ -94,7 +93,7 @@ function rss_xml($Blog) {
 	$title = Config::Title;
 	$lastBuildDate = gmdate(DATE_RFC2822, $Blog->posts[0]->timestamp);
 
-	header("Content-Type: application/rss+xml;");
+	header("Content-Type: application/rss+xml");
 	echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <rss
 	version=\"2.0\"
@@ -118,7 +117,7 @@ function rss_xml($Blog) {
 function print_rss(Blog $Blog) {
 	switch ($Blog->content_type) {
 		case ".json":
-			header("Content-Type: application/json;");
+			header("Content-Type: application/json");
 			echo json_encode($Blog->posts);
 			break;
 		case ".xml":
