@@ -16,5 +16,10 @@
 	</div>
 </div>
 <?php } ?>
-<footer class="footer"><div class="container"><?php echo Config::Footer; ?></div></footer>
+<footer class="footer">
+	<div class="container">
+		<h3><?php echo Config::Footer; ?></h3>
+		<p><?php echo Config::Description; ?></p>
+	</div>
+</footer>
 </html>

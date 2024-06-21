@@ -69,12 +69,16 @@ h5,
 h6 {
 	font-weight: 800;
 	letter-spacing: -0.03em;
+	margin-bottom: 8px;
+}
+
+.title {
+	margin-bottom: 32px;
 }
 
 .title a {
 	letter-spacing: -0.03em;
 	line-height: 1;
-	margin-bottom: 32px;
 	display: inline-block;
 	text-decoration: none;
 	color: #222;
@@ -214,23 +218,26 @@ img.featured {
 
 .nav {
 	display: block;
-	margin-left: -12px;
+	margin-left: -16px;
 	margin-bottom: 32px;
 }
 
 .nav ul,
 .pagination ul {
 	list-style-type: none;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
 }
 
 .nav li,
 .pagination li {
-	display: inline-block;
 	line-height: 2;
 }
 
 .nav li a {
-	padding: 8px 12px;
+	display: block;
+	padding: 8px 16px;
 }
 
 .pagination {
@@ -269,7 +276,6 @@ img.featured {
 	padding: 64px;
 	color: #FFF;
 	background-color: var(--primary);
-	font-weight: 800;
 }
 
 @media (max-width: 976px) {
