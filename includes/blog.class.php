@@ -203,7 +203,7 @@ class Blog {
 	}
 
 	public function get_tag_url($tag) {
-		return Config::Root . "tag/" . $tag;
+		return Blog::get_base_url() . "tag/" . $tag;
 	}
 
 	/** Returns the current page, including whether a tag was included */
