@@ -193,7 +193,7 @@ class Blog {
 	}
 
 	/** Returns the current page, including whether a tag was included */
-	function get_canonical_url(bool $include_page = true) {
+	public function get_canonical_url(bool $include_pagination = true) {
 		$url = Blog::get_base_url();
 
 		if ($this->url === Url::Page) {
@@ -208,7 +208,7 @@ class Blog {
 			$url .= "tag/{$this->tag}/";
 		}
 
-		if ($include_page === true && $this->_page_num > 0) {
+		if ($include_pagination === true && $this->_page_num > 0) {
 			$url .= "p/" . ($this->_page_num + 1);
 		}
 
