@@ -36,13 +36,13 @@ class Blog {
 		$this->_page_num_total = 1;
 
 		try {
-			if ($post !== "") {
+			if (!empty($post)) {
 				$this->posts = [new Post($post, "")];
 				$this->url = Url::Post;
 				return;
 			}
 
-			if ($page !== "") {
+			if (!empty($page)) {
 				$this->posts = [new Page($page)];
 				$this->url = Url::Page;
 				return;
@@ -204,7 +204,7 @@ class Blog {
 			return $url . "post/" . $this->posts[0]->slug;
 		}
 
-		if ($this->tag !== "") {
+		if (!empty($this->tag)) {
 			$url .= "tag/{$this->tag}/";
 		}
 

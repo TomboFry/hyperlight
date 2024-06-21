@@ -46,7 +46,7 @@ function rss_image_details ($post) {
 
 	// Use enclosure built-in method
 	// Note: Both type and length fields are required
-	if ($image_mime !== "" && $image_size > 0) {
+	if (!empty($image_mime) && $image_size > 0) {
 		echo "<enclosure ";
 		echo "url=\"{$image_url}\" ";
 		echo "type=\"{$image_mime}\" ";
@@ -58,7 +58,7 @@ function rss_image_details ($post) {
 	echo "<media:content ";
 	echo "xmlns:media=\"http://search.yahoo.com/mrss/\" ";
 	echo "url=\"{$image_url}\" medium=\"image\" ";
-	if ($image_mime !== "") echo "type=\"{$image_mime}\" ";
+	if (!empty($image_mime)) echo "type=\"{$image_mime}\" ";
 	if ($image_size > 0) echo "fileSize=\"{$image_size}\" ";
 	echo "/>";
 }
